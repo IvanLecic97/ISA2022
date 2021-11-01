@@ -1,7 +1,7 @@
-package repository;
+package project.isa.repository;
 
-import model.Users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import project.isa.model.Users.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 }
