@@ -71,6 +71,13 @@ public class RegUserService implements IRegUserService, UserDetailsService {
         regUserRepository.delete(user);
     }
 
+    @Override
+   public RegUser getUser(String username)
+    {
+        RegUser user = regUserRepository.findByUsernameEquals(username);
+        return user;
+    }
+
 
     @Override
     public Client registerClient(RegUser user) {

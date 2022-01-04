@@ -61,5 +61,12 @@ public class RegUserController {
         return new ResponseEntity<String>(retVal, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/getUser/{username}")
+    public ResponseEntity<?> getUser(@PathVariable("username") String username)
+    {
+        RegUser user = regUserService.getUser(username);
+        return new ResponseEntity<RegUser>(user, HttpStatus.OK);
+    }
+
 
 }

@@ -3,6 +3,9 @@ import React from "react";
 import { FormGroup } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import axios from "axios";
+import { Navigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import HomepageClient from "./client/homepageClient";
 
 class Login extends Component {
   constructor() {
@@ -31,8 +34,19 @@ class Login extends Component {
       localStorage.setItem("role", response.data.role);
       //console.log(localStorage.getItem("token"));
       console.log(response.data.username);
-      console.log(localStorage.getItem("username"));
+      console.log(localStorage.getItem("role"));
+
+      //this.onLogin();
+      if (localStorage.getItem("role") === "ROLE_CLIENT") {
+        window.location.href = "/homepageClient";
+      }
     });
+  }
+
+  onLogin() {
+    if (localStorage.getItem("role") === "ROLE_CLIENT") {
+      return <Navigate to="/homepageClient" replace={true} />;
+    }
   }
 
   handleChange(event) {

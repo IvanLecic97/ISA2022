@@ -12,6 +12,8 @@ import {
 import React, { Component } from "react";
 import Confirm from "./main/confirm";
 import Login from "./main/login";
+import HomepageClient from "./main/client/homepageClient";
+import UpdateClient from "./main/client/updateClient";
 
 class App extends React.Component {
   render() {
@@ -34,6 +36,8 @@ class App extends React.Component {
           <Route path="/registration" element={<Registration />} />
           <Route path="/confirm" element={<Confirm />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/homepageClient" element={<HomepageClient />} />
+          <Route path="/updateClient" element={<UpdateClient />} />
         </Routes>
       </React.Fragment>
     );
