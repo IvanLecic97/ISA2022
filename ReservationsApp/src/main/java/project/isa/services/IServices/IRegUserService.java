@@ -12,4 +12,5 @@ public interface IRegUserService {
     Client registerClient(RegUser user);
     boolean checkIfEnabled(String username);
     RegUser getUser(String username);
+    void updateUser(RegUser user);
 }

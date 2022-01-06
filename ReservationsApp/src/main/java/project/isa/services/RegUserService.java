@@ -16,11 +16,17 @@ import project.isa.repository.ClientRepository;
 import project.isa.repository.RegUserRepository;
 import project.isa.services.IServices.IRegUserService;
 
+import javax.crypto.Cipher;
 import javax.transaction.Transactional;
+import java.security.Key;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
+
+import static javax.crypto.Cipher.DECRYPT_MODE;
+import static org.springframework.cache.interceptor.SimpleKeyGenerator.generateKey;
 
 @Service
 @Transactional
@@ -38,6 +44,8 @@ public class RegUserService implements IRegUserService, UserDetailsService {
 
     @Autowired
     private EmailSenderService emailSenderService;
+
+    private static final String ALGO = "AES";
 
 
     @Override
@@ -75,6 +83,8 @@ public class RegUserService implements IRegUserService, UserDetailsService {
    public RegUser getUser(String username)
     {
         RegUser user = regUserRepository.findByUsernameEquals(username);
+
+
         return user;
     }
 
@@ -117,6 +127,22 @@ public class RegUserService implements IRegUserService, UserDetailsService {
 
         return retVal;
     }
+
+    @Override
+    public void updateUser(RegUser user)
+    {
+        RegUser u = regUserRepository.findByUsernameEquals(user.getUsername());
+        u.setName(user.getName());
+        u.setSurname(user.getSurname());
+        u.setAddress(user.getAddress());
+        u.setCountry(user.getCountry());
+        u.setCity(user.getCity());
+        u.setPhone(user.getPhone());
+
+        regUserRepository.save(u);
+
+    }
+
 
 
 }

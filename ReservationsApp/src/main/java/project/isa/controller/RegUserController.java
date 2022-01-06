@@ -65,7 +65,17 @@ public class RegUserController {
     public ResponseEntity<?> getUser(@PathVariable("username") String username)
     {
         RegUser user = regUserService.getUser(username);
+
+
         return new ResponseEntity<RegUser>(user, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/updateUser")
+    public ResponseEntity<?> updateUser(@RequestBody RegUser user)
+    {
+        regUserService.updateUser(user);
+        return new ResponseEntity<String>("Updated!", HttpStatus.OK);
+
     }
 
 

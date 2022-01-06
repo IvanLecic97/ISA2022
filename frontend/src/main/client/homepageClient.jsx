@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { ListGroup } from "react-bootstrap";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { withRouter } from "react-router";
 
 class HomepageClient extends Component {
   constructor(props) {
@@ -7,16 +9,18 @@ class HomepageClient extends Component {
     this.state = {};
   }
 
-  profileClick(event) {
-    event.preventDefault();
-    window.location.href = "/updateClient";
-  }
+  profileClick = () => {
+    const { history } = this.props;
+    history.push("/updateClient");
+  };
 
   render() {
     return (
       <div style={{ alignContent: "center" }}>
         <ListGroup style={{ width: "220px", alignContent: "center" }}>
-          <button onClick={this.profileClick}>Profil klijenta</button>
+          <button>
+            <Link to="/updateClient">Profil klijenta</Link>
+          </button>
         </ListGroup>
       </div>
     );
