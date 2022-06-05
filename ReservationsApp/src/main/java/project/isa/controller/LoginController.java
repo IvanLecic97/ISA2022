@@ -18,7 +18,9 @@ import project.isa.security.auth.JwtAuthenticationRequest;
 import project.isa.services.CustomUserDetailsService;
 import project.isa.services.RegUserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller
@@ -45,6 +47,14 @@ public class LoginController {
 
 
         return new ResponseEntity<>(userDetailsService.login(authenticationRequest), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.invalidate();
+
+        return ResponseEntity.status(200).build();
     }
 
 

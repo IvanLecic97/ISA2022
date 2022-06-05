@@ -1,0 +1,12 @@
+.clientDiv {
+  align-items: center;
+  height: 70%;
+  position: absolute;
+  left: 50%;
+}
+
+.formField {
+  width: 200px;
+  margin: 0 auto;
+  align-items: center;
+}

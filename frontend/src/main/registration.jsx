@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, FormGroup } from "react-bootstrap";
 import axios from "axios";
+import "./css/registration.css";
 
 class Registration extends React.Component {
   constructor() {
@@ -48,6 +49,7 @@ class Registration extends React.Component {
 
     return (
       <div
+        className="startDiv"
         style={{
           alignItems: "center",
           justifyContent: "center",

@@ -1,0 +1,14 @@
+.startDiv {
+  background-color: deepskyblue;
+  background-repeat: repeat;
+  background-image: url("../css/img/westvirgina.jpg");
+  background-size: cover;
+  height: 100%;
+}
+
+#root {
+  background-image: url("../css/img/westvirgina.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}

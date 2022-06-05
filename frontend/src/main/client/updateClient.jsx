@@ -6,28 +6,10 @@ import {
   ListGroupItem,
   Row,
 } from "react-bootstrap";
+import "../css/clientProfile.css";
 import { ListGroup } from "react-bootstrap";
 import axios from "axios";
 const UpdateClient = () => {
-  /*constructor() {
-    super();
-    this.state = {
-      oldPassword: "",
-      oldName: "",
-      oldSurname: "",
-      oldCity: "",
-      oldAddress: "",
-      oldCountry: "",
-      oldPhone: "",
-      newPassword: "",
-      newPasswordRep: "",
-      newName: "",
-      newSurname: "",
-      newCity: "",
-      newAddress: "",
-      newCountry: "",
-      newPhone: "",
-    }; */
   const [oldPassword, setOldPassword] = useState("");
   const [oldName, setOldName] = useState("");
   const [oldSurname, setOldSurname] = useState("");
@@ -148,10 +130,10 @@ const UpdateClient = () => {
   };
 
   return (
-    <div style={{ alignSelf: "center", width: "200px" }}>
-      <Form style={{ width: "220px" }} onSubmit={onSubmit}>
+    <div className="clientDiv">
+      <Form className="formField" onSubmit={onSubmit}>
         <FormGroup>
-          <div className="input-group mb-3">
+          <div>
             <label>Name</label>
             <input value={oldName} onChange={onChangeName} />
           </div>

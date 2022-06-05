@@ -16,12 +16,14 @@ class HomepageClient extends Component {
 
   render() {
     return (
-      <div style={{ alignContent: "center" }}>
-        <ListGroup style={{ width: "220px", alignContent: "center" }}>
-          <button>
-            <Link to="/updateClient">Profil klijenta</Link>
-          </button>
-        </ListGroup>
+      <div>
+        <ul className="ul">
+          <li>
+            <button>
+              <Link to="/updateClient">Profil klijenta</Link>
+            </button>
+          </li>
+        </ul>
       </div>
     );
   }
