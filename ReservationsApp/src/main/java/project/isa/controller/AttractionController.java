@@ -44,6 +44,7 @@ public class AttractionController {
         b.setPrice(bungalow.getPrice());
         b.setRates(0.0);
         b.setReserved(false);
+        b.setCountry(bungalow.getCountry());
         b.setStartDate(bungalow.getStartDate());
         attractionService.saveBungalow(b);
 
@@ -88,8 +89,8 @@ public class AttractionController {
     }
 
     @GetMapping(value = "/getAttractions")
-    public ResponseEntity<List<AttractionDTO>> getAllAttractions(){
-        List<Attraction> list1 = attractionService.getAllEntities();
+    public ResponseEntity<List<AttractionDTO>> getAllFreeAttractions(){
+        List<Attraction> list1 = attractionService.getAllFreeAttractions();
         List<AttractionDTO> list2 = new ArrayList<AttractionDTO>();
         for(Attraction a : list1){
             AttractionDTO atr = new AttractionDTO();
@@ -114,14 +115,6 @@ public class AttractionController {
         return new ResponseEntity<List<String>>(retList, HttpStatus.OK);
     }
 
-
-    @PostMapping(value = "/getFilteredAttraction")
-    public ResponseEntity<List<AttractionDTO>> getFilteredAttractions(@RequestBody EntityFilterDTO entityFilterDTO){
-        List<AttractionDTO> retList = attractionService.filterAttraction(entityFilterDTO);
-
-        return new ResponseEntity<List<AttractionDTO>>(retList, HttpStatus.OK);
-    }
-
     @GetMapping(value = "/getTypeOf")
     public ResponseEntity<List<AttractionDTO>> getTypeof(){
         List<AttractionDTO> retVal = attractionService.getTypes();
@@ -134,6 +127,11 @@ public class AttractionController {
     @GetMapping(value = "/getAllCountries")
     public ResponseEntity<List<String>> getAllCountries(){
         return new ResponseEntity<List<String>>(attractionService.getAllCountries(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getAttractionById/{id}")
+    public ResponseEntity<Attraction> getAttractionByID(@PathVariable Long id){
+        return new ResponseEntity<Attraction>(attractionService.getById(id), HttpStatus.OK);
     }
 
 }

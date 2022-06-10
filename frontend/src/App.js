@@ -17,6 +17,9 @@ import UpdateClient from "./main/client/updateClient";
 import UnregisteredHomepage from "./main/unregisteredHomepage";
 import AdminHomepage from "./main/admin/adminHomepage";
 import SearchEntities from "./main/client/searchEntities";
+import ReservationForm from "./main/client/reservationForm";
+import ReservationFormShip from "./main/client/reservationFormShip";
+import ReservationFormFishing from "./main/client/reservationFormFishing";
 
 const App = () => {
   const [value, setValue] = useState(true);
@@ -69,6 +72,12 @@ const App = () => {
         />
         <Route path="/homepageAdmin" element={<AdminHomepage />} />
         <Route path="/searchEntities" element={<SearchEntities />} />
+        <Route path="/reservationForm" element={<ReservationForm />} />
+        <Route path="/reservationFormShip" element={<ReservationFormShip />} />
+        <Route
+          path="/reservationFormFishing"
+          element={<ReservationFormFishing />}
+        />
       </Routes>
     </React.Fragment>
   );

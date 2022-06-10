@@ -17,15 +17,15 @@ public class FishingInstructor extends Attraction {
     @Column(name = "FishingEquipment")
     private boolean fishingEquipment;
 
-    public FishingInstructor(Long id, String address, String country, String description, Double rates, Double price, boolean reserved, LocalDate startDate, LocalDate endDate, String image) {
-        super(id, address, country, description, rates, price, reserved, startDate, endDate, image);
+    public FishingInstructor(Long id, String address, String country, String description, Double rates, Double price, boolean reserved, LocalDate startDate, LocalDate endDate, String image, Long ownerId, int maxGuests) {
+        super(id, address, country, description, rates, price, reserved, startDate, endDate, image, ownerId, maxGuests);
     }
 
     public FishingInstructor() {
     }
 
-    public FishingInstructor(Long id, String address, String country, String description, Double rates, Double price, boolean reserved, LocalDate startDate, LocalDate endDate, String instructorInfo, boolean fishingEquipment, String image) {
-        super(id, address, country,description, rates, price, reserved, startDate, endDate, image);
+    public FishingInstructor(Long id, String address, String country, String description, Double rates, Double price, boolean reserved, LocalDate startDate, LocalDate endDate, String instructorInfo, boolean fishingEquipment, String image, Long ownerId, int maxGuests) {
+        super(id, address, country,description, rates, price, reserved, startDate, endDate, image, ownerId, maxGuests);
         this.instructorInfo = instructorInfo;
         this.fishingEquipment = fishingEquipment;
     }

@@ -47,8 +47,14 @@ public class Attraction {
     @Column(name = "Image")
     private String image;
 
+    @Column(name = "Owner_Id")
+    private Long ownerId;
 
-    public Attraction(Long id, String address, String country, String description, Double rates, Double price, boolean reserved, LocalDate startDate, LocalDate endDate, String image) {
+    @Column(name = "Max_Guests")
+    private int maxGuests;
+
+
+    public Attraction(Long id, String address, String country, String description, Double rates, Double price, boolean reserved, LocalDate startDate, LocalDate endDate, String image, Long ownerId, int maxGuests) {
         this.id = id;
         this.address = address;
         this.country = country;
@@ -59,6 +65,8 @@ public class Attraction {
         this.startDate = startDate;
         this.endDate = endDate;
         this.image = image;
+        this.ownerId = ownerId;
+        this.maxGuests = maxGuests;
     }
 
     public Attraction() {
@@ -149,5 +157,21 @@ public class Attraction {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public int getMaxGuests() {
+        return maxGuests;
+    }
+
+    public void setMaxGuests(int maxGuests) {
+        this.maxGuests = maxGuests;
     }
 }

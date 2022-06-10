@@ -27,8 +27,8 @@ public class Bungalow extends Attraction {
 
 
     public Bungalow(Long id, String address, String country, String description, Double rates, Double price, boolean reserved, LocalDate startDate,
-                    LocalDate endDate, boolean tv, boolean airConditioner, boolean wifi, boolean fridge, boolean kitchenAppliances, String image) {
-        super(id, address, country, description, rates, price, reserved, startDate, endDate, image);
+                    LocalDate endDate, boolean tv, boolean airConditioner, boolean wifi, boolean fridge, boolean kitchenAppliances, String image, Long ownerId, int maxGuests) {
+        super(id, address, country, description, rates, price, reserved, startDate, endDate, image, ownerId, maxGuests);
         this.tv = tv;
         this.airConditioner = airConditioner;
         this.wifi = wifi;

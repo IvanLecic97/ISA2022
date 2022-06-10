@@ -5,6 +5,18 @@
   margin: 20px 0;
 }
 
+.btnMore {
+  float: right;
+  top: 50%;
+}
+
+.bungalowForm {
+  width: 600px;
+  background-color: cornflowerblue;
+  position: relative;
+  margin: 0 auto;
+}
+
 .rating {
   position: relative;
   background: #f4f4f4;

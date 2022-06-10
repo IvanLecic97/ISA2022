@@ -2,6 +2,7 @@ package project.isa.services.IServices;
 
 import project.isa.dto.AttractionDTO;
 import project.isa.dto.EntityFilterDTO;
+import project.isa.dto.ReservationDTO;
 import project.isa.model.entities.Attraction;
 import project.isa.model.entities.Bungalow;
 import project.isa.model.entities.FishingInstructor;
@@ -20,12 +21,9 @@ public interface IAttractionService  {
     List<FishingInstructor> getAllFishingInstructors();
     List<Attraction> getAllEntities();
     String getType(Attraction attraction);
-    List<AttractionDTO> filterAttraction(EntityFilterDTO entityFilterDTO);
-    List<Attraction> filterByCountry(List<Attraction> attractions, String country);
-    List<Attraction> filterByPrice(List<Attraction> attractions, double price);
-    List<Attraction> filterByStartDate(List<Attraction> attractions, String startDate);
-    List<Attraction> filterByEndDate(List<Attraction> attractions, String endDate);
-    List<Attraction> filterByRating(List<Attraction> attractions, double rating);
     List<String> getAllCountries();
+    Attraction getById(Long id);
+    List<Attraction> getAllFreeAttractions();
+
 
 }

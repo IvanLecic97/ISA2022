@@ -64,6 +64,11 @@ public class AttractionService implements IAttractionService {
     }
 
     @Override
+    public Attraction getById(Long id) {
+        return attractionRepository.findByIdEquals(id);
+    }
+
+    @Override
     public List<Ship> getAllShips() {
         return shipRepository.findAll();
     }
@@ -76,6 +81,11 @@ public class AttractionService implements IAttractionService {
     @Override
     public List<Attraction> getAllEntities() {
         return attractionRepository.findAll();
+    }
+
+    @Override
+    public List<Attraction> getAllFreeAttractions() {
+        return attractionRepository.findAllByReservedEquals(false);
     }
 
     @Override
@@ -93,105 +103,7 @@ public class AttractionService implements IAttractionService {
         return retVal;
     }
 
-    @Override
-    public List<Attraction> filterByCountry(List<Attraction> attractions, String country) {
-        List<Attraction> retList = new ArrayList<Attraction>();
-        for(Attraction a : attractions ){
-            if(a.getCountry().equals(country)){
-                retList.add(a);
-            }
-            else if(country.equals("")){
-                retList = attractions;
-            }
-        }
 
-
-        return retList;
-    }
-
-    @Override
-    public List<Attraction> filterByPrice(List<Attraction> attractions, double price) {
-        List<Attraction> retList = new ArrayList<Attraction>();
-
-        for(Attraction a : attractions){
-            if(a.getPrice() <= price){
-                retList.add(a);
-            }
-        }
-
-
-
-        if(price == 0 ){
-            retList = attractions;
-        }
-
-
-
-        return retList;
-    }
-
-    @Override
-    public List<Attraction> filterByStartDate(List<Attraction> attractions, String startDate) {
-        List<Attraction> retList = new ArrayList<Attraction>();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        LocalDate date = LocalDate.parse(startDate, formatter) ;
-
-
-        for(Attraction a : attractions){
-            if(date.isEqual(a.getStartDate()) || date.isBefore(a.getStartDate())){
-                retList.add(a);
-            }
-        }
-
-        if(startDate.equals("1900/01/01")){
-            retList = attractions;
-        }
-
-        return retList;
-    }
-
-    @Override
-    public List<Attraction> filterByEndDate(List<Attraction> attractions, String endDate) {
-        List<Attraction> retList = new ArrayList<Attraction>();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        LocalDate date = LocalDate.parse(endDate, formatter);
-
-
-        for(Attraction a : attractions){
-            if(date.isEqual(a.getEndDate()) || date.isAfter(a.getEndDate())){
-                retList.add(a);
-            }
-        }
-
-        if(endDate.equals("1900/01/01")){
-            retList = attractions;
-        }
-
-        return retList;
-    }
-
-    @Override
-    public List<Attraction> filterByRating(List<Attraction> attractions, double rating) {
-        List<Attraction> retList = new ArrayList<Attraction>();
-
-        for(Attraction a : attractions){
-            if(a.getRates() >= rating){
-                retList.add(a);
-            }
-        }
-
-
-
-        if(rating == 0 ){
-            retList = attractions;
-        }
-
-
-
-        return retList;
-    }
 
     public List<AttractionDTO> getTypes(){
         List<AttractionDTO> retList = new ArrayList<AttractionDTO>();
@@ -204,30 +116,6 @@ public class AttractionService implements IAttractionService {
 
         return retList;
 
-    }
-
-    @Override
-    public List<AttractionDTO> filterAttraction(EntityFilterDTO entityFilterDTO) {
-        List<AttractionDTO> retVal = new ArrayList<AttractionDTO>();
-        List<Attraction> loadedList = attractionRepository.findAll();
-        List<Attraction> tempList = filterByCountry(loadedList, entityFilterDTO.getCountry());
-        tempList = filterByPrice(tempList, entityFilterDTO.getPrice());
-        tempList = filterByStartDate(tempList, entityFilterDTO.getStartDate());
-        tempList = filterByEndDate(tempList, entityFilterDTO.getEndDate());
-        tempList = filterByRating(tempList, entityFilterDTO.getRating());
-
-
-
-
-        for(Attraction a : tempList){
-            AttractionDTO atr = new AttractionDTO();
-            atr.setAttraction(a);
-            atr.setType(getType(a));
-            retVal.add(atr);
-        }
-
-
-        return retVal;
     }
 
     @Override

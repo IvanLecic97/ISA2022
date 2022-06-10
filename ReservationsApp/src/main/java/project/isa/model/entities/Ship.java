@@ -28,8 +28,8 @@ public class Ship extends Attraction {
     public Ship() {
     }
 
-    public Ship(Long id, String address, String country, String description, Double rates, Double price, boolean reserved, LocalDate startDate, LocalDate endDate, boolean miniBar, boolean pool, boolean restaurant, String image) {
-        super(id, address, country, description, rates, price, reserved, startDate, endDate, image);
+    public Ship(Long id, String address, String country, String description, Double rates, Double price, boolean reserved, LocalDate startDate, LocalDate endDate, boolean miniBar, boolean pool, boolean restaurant, String image, Long ownerId, int maxGuests) {
+        super(id, address, country, description, rates, price, reserved, startDate, endDate, image, ownerId, maxGuests);
         this.miniBar = miniBar;
         this.pool = pool;
         this.restaurant = restaurant;
