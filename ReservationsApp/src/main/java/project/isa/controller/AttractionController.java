@@ -12,6 +12,7 @@ import org.w3c.dom.Attr;
 import project.isa.dto.AttractionDTO;
 import project.isa.dto.BungalowDTO;
 import project.isa.dto.EntityFilterDTO;
+import project.isa.dto.ShipDTO;
 import project.isa.model.entities.Attraction;
 import project.isa.model.entities.Bungalow;
 import project.isa.model.entities.FishingInstructor;
@@ -57,15 +58,14 @@ public class AttractionController {
         else return new ResponseEntity<String>("Error!!", HttpStatus.OK);
     }
 
+    @RolesAllowed("ROLE_SHIP_OWNER")
     @PostMapping(value = "/addShip")
-    public ResponseEntity<String> addShip(@RequestBody Ship ship){
-        Ship s = new Ship();
-        s = ship;
-
-        s.setRates(0.0);
-        attractionService.saveShip(s);
-
-        return new ResponseEntity<String>("Ship is added!", HttpStatus.OK);
+    public ResponseEntity<String> addShip(@RequestBody ShipDTO ship){
+        ShipDTO shipDTO = attractionService.addShip(ship);
+        if(shipDTO != null){
+            return new ResponseEntity<String>("Ship is added!", HttpStatus.OK);
+        }
+        else return new ResponseEntity<String>("Error!!", HttpStatus.OK);
 
 
     }

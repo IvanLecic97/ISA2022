@@ -80,6 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/registerShipOwner").permitAll()
                 .antMatchers("/api/user/registerFishingInstructorOwner").permitAll()
                 .antMatchers("/api/attraction/addBungalow").hasAuthority(Roles.ROLE_BUNGALOW_OWNER)
+                .antMatchers("/api/attraction/addShip").hasAuthority(Roles.ROLE_SHIP_OWNER)
                 //.antMatchers("/api/**").permitAll()
                 .antMatchers("/api/attraction/getAttractions").hasAnyAuthority("ROLE_CLIENT")
                 .anyRequest().authenticated().and()

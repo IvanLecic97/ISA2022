@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.isa.dto.AttractionDTO;
 import project.isa.dto.BungalowDTO;
+import project.isa.dto.ShipDTO;
 import project.isa.mappers.BungalowMapper;
+import project.isa.mappers.ShipMapper;
 import project.isa.model.entities.Attraction;
 import project.isa.model.entities.Bungalow;
 import project.isa.model.entities.FishingInstructor;
 import project.isa.model.entities.Ship;
 import project.isa.model.users.BungalowOwner;
+import project.isa.model.users.ShipOwner;
 import project.isa.repository.*;
 import project.isa.services.IServices.IAttractionService;
 
@@ -34,6 +37,9 @@ public class AttractionService implements IAttractionService {
 
     @Autowired
     private BungalowOwnerRepository bungalowOwnerRepository;
+
+    @Autowired
+    private ShipOwnerRepository shipOwnerRepository;
 
     @Autowired
     private RegUserService regUserService;
@@ -134,5 +140,17 @@ public class AttractionService implements IAttractionService {
         bungalowOwnerRepository.save(bungalowOwner);
 
         return BungalowMapper.INSTANCE.bungalowToDto(bungalow);
+    }
+
+    @Override
+    public ShipDTO addShip(ShipDTO shipDTO) {
+        Ship ship = ShipMapper.INSTANCE.dtoToShip(shipDTO);
+        shipRepository.save(ship);
+
+        ShipOwner shipOwner = shipOwnerRepository.findByUsername(shipDTO.getOwnerUsername());
+        shipOwner.addNewShip(ship);
+        shipOwnerRepository.save(shipOwner);
+
+        return ShipMapper.INSTANCE.shipToDto(ship);
     }
 }

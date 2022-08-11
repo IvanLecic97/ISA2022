@@ -6,4 +6,6 @@ import project.isa.model.users.ShipOwner;
 
 @Repository
 public interface ShipOwnerRepository extends JpaRepository<ShipOwner, Long> {
+    ShipOwner findByUsername(String username);
+
 }

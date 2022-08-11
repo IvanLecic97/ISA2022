@@ -1,9 +1,6 @@
 package project.isa.services.IServices;
 
-import project.isa.dto.AttractionDTO;
-import project.isa.dto.BungalowDTO;
-import project.isa.dto.EntityFilterDTO;
-import project.isa.dto.ReservationDTO;
+import project.isa.dto.*;
 import project.isa.model.entities.Attraction;
 import project.isa.model.entities.Bungalow;
 import project.isa.model.entities.FishingInstructor;
@@ -28,7 +25,7 @@ public interface IAttractionService  {
 
     BungalowDTO addBungalow(BungalowDTO bungalowDTO);
 
-
+    ShipDTO addShip(ShipDTO shipDTO);
 
 
 }

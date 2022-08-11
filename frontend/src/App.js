@@ -23,6 +23,7 @@ import ReservationFormFishing from "./main/client/reservationFormFishing";
 import DiscountedPage from "./main/client/discountedPage";
 import AddBungalow from "./main/owners/addBungalow";
 import OwnerRegistration from "./main/ownerRegistration";
+import AddShip from "./main/owners/addShip";
 
 const App = () => {
   const [value, setValue] = useState(true);
@@ -84,6 +85,7 @@ const App = () => {
 
         <Route path="/addBungalow" element={<AddBungalow />} />
         <Route path="/ownerRegistration" element={<OwnerRegistration />} />
+        <Route path="/addShip" element={<AddShip />} />
       </Routes>
     </React.Fragment>
   );

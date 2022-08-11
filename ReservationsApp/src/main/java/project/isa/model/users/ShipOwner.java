@@ -47,4 +47,6 @@ public class ShipOwner extends RegUser {
     public void setShipsOwned(List<Ship> shipsOwned) {
         this.shipsOwned = shipsOwned;
     }
+
+    public void addNewShip(Ship ship) { this.getShipsOwned().add(ship) ;}
 }

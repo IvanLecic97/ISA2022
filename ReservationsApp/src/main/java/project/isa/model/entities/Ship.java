@@ -42,11 +42,11 @@ public class Ship extends Attraction {
         this.restaurant = restaurant;
     }
 
-    public Ship(boolean miniBar, boolean pool, boolean restaurant) {
+    /*public Ship(boolean miniBar, boolean pool, boolean restaurant) {
         this.miniBar = miniBar;
         this.pool = pool;
         this.restaurant = restaurant;
-    }
+    } */
 
     public boolean isMiniBar() {
         return miniBar;
