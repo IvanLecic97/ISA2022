@@ -46,4 +46,6 @@ public class FishingInstructorOwner extends RegUser {
     public void setInstructors(List<FishingInstructor> instructors) {
         this.instructors = instructors;
     }
+
+    public void addInstructor(FishingInstructor fishingInstructor) {this.getInstructors().add(fishingInstructor) ; }
 }

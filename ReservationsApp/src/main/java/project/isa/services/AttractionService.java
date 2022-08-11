@@ -4,14 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.isa.dto.AttractionDTO;
 import project.isa.dto.BungalowDTO;
+import project.isa.dto.FishingInstructorDTO;
 import project.isa.dto.ShipDTO;
 import project.isa.mappers.BungalowMapper;
+import project.isa.mappers.FishingInstructorMapper;
 import project.isa.mappers.ShipMapper;
 import project.isa.model.entities.Attraction;
 import project.isa.model.entities.Bungalow;
 import project.isa.model.entities.FishingInstructor;
 import project.isa.model.entities.Ship;
 import project.isa.model.users.BungalowOwner;
+import project.isa.model.users.FishingInstructorOwner;
 import project.isa.model.users.ShipOwner;
 import project.isa.repository.*;
 import project.isa.services.IServices.IAttractionService;
@@ -40,6 +43,9 @@ public class AttractionService implements IAttractionService {
 
     @Autowired
     private ShipOwnerRepository shipOwnerRepository;
+
+    @Autowired
+    private FishingInstructorOwnerRepository fishingInstructorOwnerRepository;
 
     @Autowired
     private RegUserService regUserService;
@@ -152,5 +158,17 @@ public class AttractionService implements IAttractionService {
         shipOwnerRepository.save(shipOwner);
 
         return ShipMapper.INSTANCE.shipToDto(ship);
+    }
+
+    @Override
+    public FishingInstructorDTO addFishingInstructor(FishingInstructorDTO fishingInstructorDTO) {
+        FishingInstructor fishingInstructor = FishingInstructorMapper.INSTANCE.dtoToInstructor(fishingInstructorDTO);
+        fishingInstructorRepository.save(fishingInstructor);
+
+        FishingInstructorOwner fishingInstructorOwner = fishingInstructorOwnerRepository.findByUsername(fishingInstructor.getOwnerUsername());
+        fishingInstructorOwner.addInstructor(fishingInstructor);
+        fishingInstructorOwnerRepository.save(fishingInstructorOwner);
+
+        return FishingInstructorMapper.INSTANCE.instructorToDto(fishingInstructor);
     }
 }

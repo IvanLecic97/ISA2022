@@ -9,10 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.w3c.dom.Attr;
-import project.isa.dto.AttractionDTO;
-import project.isa.dto.BungalowDTO;
-import project.isa.dto.EntityFilterDTO;
-import project.isa.dto.ShipDTO;
+import project.isa.Roles;
+import project.isa.dto.*;
 import project.isa.model.entities.Attraction;
 import project.isa.model.entities.Bungalow;
 import project.isa.model.entities.FishingInstructor;
@@ -70,13 +68,15 @@ public class AttractionController {
 
     }
 
+    @RolesAllowed(Roles.ROLE_FISHING_INSTRUCTOR)
     @PostMapping(value = "/addFishingInstructor")
-    public ResponseEntity<String> addFishingInstructor(@RequestBody FishingInstructor fishingInstructor){
-        fishingInstructor.setRates(0.0);
+    public ResponseEntity<String> addFishingInstructor(@RequestBody FishingInstructorDTO fishingInstructor){
+        FishingInstructorDTO fishingInstructorDTO = attractionService.addFishingInstructor(fishingInstructor);
+        if(fishingInstructorDTO != null){
+            return new ResponseEntity<String>("Fishing instructor added!", HttpStatus.OK);
+        }
+        else return new ResponseEntity<String>("Error!!", HttpStatus.OK);
 
-        attractionService.saveFishingInstructor(fishingInstructor);
-
-        return new ResponseEntity<String>("Fishing instructor added!", HttpStatus.OK);
     }
 
     @GetMapping(value = "/getBungalows")

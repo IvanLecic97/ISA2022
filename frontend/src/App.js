@@ -24,6 +24,7 @@ import DiscountedPage from "./main/client/discountedPage";
 import AddBungalow from "./main/owners/addBungalow";
 import OwnerRegistration from "./main/ownerRegistration";
 import AddShip from "./main/owners/addShip";
+import AddInstructor from "./main/owners/addInstructor";
 
 const App = () => {
   const [value, setValue] = useState(true);
@@ -86,6 +87,7 @@ const App = () => {
         <Route path="/addBungalow" element={<AddBungalow />} />
         <Route path="/ownerRegistration" element={<OwnerRegistration />} />
         <Route path="/addShip" element={<AddShip />} />
+        <Route path="addInstructor" element={<AddInstructor />} />
       </Routes>
     </React.Fragment>
   );

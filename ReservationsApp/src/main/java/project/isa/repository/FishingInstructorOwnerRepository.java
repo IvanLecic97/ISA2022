@@ -6,4 +6,6 @@ import project.isa.model.users.FishingInstructorOwner;
 
 @Repository
 public interface FishingInstructorOwnerRepository extends JpaRepository<FishingInstructorOwner, Long> {
+    FishingInstructorOwner findByUsername(String username);
+
 }

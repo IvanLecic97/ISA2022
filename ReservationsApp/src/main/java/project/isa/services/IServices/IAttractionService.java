@@ -27,5 +27,7 @@ public interface IAttractionService  {
 
     ShipDTO addShip(ShipDTO shipDTO);
 
+    FishingInstructorDTO addFishingInstructor(FishingInstructorDTO fishingInstructorDTO);
+
 
 }
