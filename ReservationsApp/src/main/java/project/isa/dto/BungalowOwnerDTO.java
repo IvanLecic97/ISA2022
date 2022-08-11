@@ -1,16 +1,8 @@
 package project.isa.dto;
 
-import project.isa.model.users.Authorities;
-import project.isa.model.users.RegUser;
 import project.isa.model.users.UserTokenState;
 
-import javax.persistence.*;
-import java.util.List;
-import java.util.stream.Collectors;
-
-public class RegUserDTO {
-
-    private Long id;
+public class BungalowOwnerDTO {
 
     private String username;
 
@@ -41,12 +33,11 @@ public class RegUserDTO {
 
     private String role;
 
-    private UserTokenState token;
-    //private List<String> authorities;
+    private String description;
 
 
-    public RegUserDTO(Long id, String username, String password, String name, String surname, String address, String city, String country, String phone, boolean activated, String role, UserTokenState token, List<String> authorities) {
-        this.id = id;
+    public BungalowOwnerDTO(String username, String password, String name, String surname, String address, String city,
+                            String country, String phone, boolean activated, String role, String description) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -57,40 +48,10 @@ public class RegUserDTO {
         this.phone = phone;
         this.activated = activated;
         this.role = role;
-        this.token = token;
-        //this.authorities = authorities;
-    }
-    public RegUserDTO(RegUser user) {
-        this.id = user.getId();
-        this.username = user.getUsername();
-        this.password = user.getPassword();
-        this.name = user.getName();
-        this.surname = user.getSurname();
-        this.address = user.getAddress();
-        this.city = user.getCity();
-        this.country = user.getCountry();
-        this.phone = user.getPhone();
-        this.activated = user.getActivated();
-        this.role = user.getRole();
-        token = null;
-        /*this.authorities = user.getAuthorities()
-                .stream().map(
-                        authority ->
-                                ((Authorities)authority).getName()).
-                collect(Collectors.toList());*/
+        this.description = description;
     }
 
-    public RegUserDTO()
-    {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public BungalowOwnerDTO() {
     }
 
     public String getUsername() {
@@ -173,19 +134,13 @@ public class RegUserDTO {
         this.role = role;
     }
 
-    public UserTokenState getToken() {
-        return token;
+    public String getDescription() {
+        return description;
     }
 
-    public void setToken(UserTokenState token) {
-        this.token = token;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-   /* public List<String> getAuthorities() {
-        return authorities;
-    }
 
-    public void setAuthorities(List<String> authorities) {
-        this.authorities = authorities;
-    }*/
 }

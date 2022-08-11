@@ -1,69 +1,50 @@
-package project.isa.model.entities;
+package project.isa.dto;
 
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.persistence.*;
+import javax.persistence.Column;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public class Attraction {
-    @Id
-    @Column(name = "Id")
-    @SequenceGenerator(name="gen12",sequenceName = "gen112",initialValue = 4,allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "gen12")
-    private Long id;
+public class BungalowDTO {
 
-    @Column(name = "Name")
     private String name;
 
-    @Column(name = "Address")
     private String address;
 
-    @Column(name = "Country")
     private String country;
 
-    @Column(name = "City")
+
     private String city;
 
-    @Column(name = "Description")
     private String description;
 
-    @Column(name = "Rating")
     private Double rates;
 
-    @Column(name = "Price")
     private Double price;
 
-    @Column(name = "Reserved")
+
     private boolean reserved;
 
-    @Column(name = "StartDate")
+
     private LocalDate startDate;
 
-    @Column(name = "EndDate")
     private LocalDate endDate;
 
-    @Column(name = "Image")
     private String image;
 
-    @Column(name = "Owner_Username")
     private String ownerUsername;
 
-    @Column(name = "Max_Guests")
     private int maxGuests;
 
-    @Column(name = "Type")
-    private String type;
+    public boolean tv;
+
+    public boolean airConditioner;
+
+    public boolean wifi;
+
+    public boolean fridge;
 
 
-    public Attraction(Long id, String address, String country, String city, String description, Double rates,
-                      Double price, boolean reserved, LocalDate startDate, LocalDate endDate,
-                      String image, String ownerUsername, int maxGuests, String type) {
-        this.id = id;
+    public BungalowDTO(String name, String address, String country, String city, String description, Double rates, Double price, boolean reserved, LocalDate startDate, LocalDate endDate, String image, String ownerUsername, int maxGuests, boolean tv, boolean airConditioner, boolean wifi, boolean fridge) {
+        this.name = name;
         this.address = address;
         this.country = country;
         this.description = description;
@@ -75,23 +56,14 @@ public class Attraction {
         this.image = image;
         this.ownerUsername = ownerUsername;
         this.maxGuests = maxGuests;
-        this.type = type;
+        this.tv = tv;
+        this.airConditioner = airConditioner;
+        this.wifi = wifi;
+        this.fridge = fridge;
         this.city = city;
     }
 
-    public Attraction() {
-
-    }
-
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public BungalowDTO() {}
 
     public String getName() {
         return name;
@@ -109,9 +81,21 @@ public class Attraction {
         this.address = address;
     }
 
-    public String getCountry() {return country;}
+    public String getCountry() {
+        return country;
+    }
 
-    public void setCountry(String country) {this.country = country;}
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public String getDescription() {
         return description;
@@ -185,19 +169,35 @@ public class Attraction {
         this.maxGuests = maxGuests;
     }
 
-    public String getType() {
-        return type;
+    public boolean isTv() {
+        return tv;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTv(boolean tv) {
+        this.tv = tv;
     }
 
-    public String getCity() {
-        return city;
+    public boolean isAirConditioner() {
+        return airConditioner;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setAirConditioner(boolean airConditioner) {
+        this.airConditioner = airConditioner;
+    }
+
+    public boolean isWifi() {
+        return wifi;
+    }
+
+    public void setWifi(boolean wifi) {
+        this.wifi = wifi;
+    }
+
+    public boolean isFridge() {
+        return fridge;
+    }
+
+    public void setFridge(boolean fridge) {
+        this.fridge = fridge;
     }
 }

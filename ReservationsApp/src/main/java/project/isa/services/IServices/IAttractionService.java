@@ -1,6 +1,7 @@
 package project.isa.services.IServices;
 
 import project.isa.dto.AttractionDTO;
+import project.isa.dto.BungalowDTO;
 import project.isa.dto.EntityFilterDTO;
 import project.isa.dto.ReservationDTO;
 import project.isa.model.entities.Attraction;
@@ -24,6 +25,10 @@ public interface IAttractionService  {
     List<String> getAllCountries();
     Attraction getById(Long id);
     List<Attraction> getAllFreeAttractions();
+
+    BungalowDTO addBungalow(BungalowDTO bungalowDTO);
+
+
 
 
 }

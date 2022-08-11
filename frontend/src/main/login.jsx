@@ -40,6 +40,7 @@ const Login = () => {
       localStorage.setItem("role", response.data.role);
       console.log(response.data.username);
       console.log(localStorage.getItem("role"));
+      console.log(localStorage.getItem("token"));
 
       if (localStorage.getItem("role") === "ROLE_CLIENT") {
         navigate("/homepageClient");
@@ -52,7 +53,7 @@ const Login = () => {
 
   return (
     <div>
-      <Form style={{ width: "550px" }}		 onSubmit={handleSubmit}>
+      <Form style={{ width: "550px" }} onSubmit={handleSubmit}>
         <FormGroup>
           <input
             onChange={onChangeUsername}

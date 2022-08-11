@@ -20,6 +20,9 @@ import SearchEntities from "./main/client/searchEntities";
 import ReservationForm from "./main/client/reservationForm";
 import ReservationFormShip from "./main/client/reservationFormShip";
 import ReservationFormFishing from "./main/client/reservationFormFishing";
+import DiscountedPage from "./main/client/discountedPage";
+import AddBungalow from "./main/owners/addBungalow";
+import OwnerRegistration from "./main/ownerRegistration";
 
 const App = () => {
   const [value, setValue] = useState(true);
@@ -59,7 +62,6 @@ const App = () => {
           <button onClick={onLogout}>Logut</button>
         </div>
       </nav>
-      <body className="body"></body>
       <Routes>
         <Route path="/registration" element={<Registration />} />
         <Route path="/confirm" element={<Confirm />} />
@@ -78,6 +80,10 @@ const App = () => {
           path="/reservationFormFishing"
           element={<ReservationFormFishing />}
         />
+        <Route path="/discountedPage" element={<DiscountedPage />} />
+
+        <Route path="/addBungalow" element={<AddBungalow />} />
+        <Route path="/ownerRegistration" element={<OwnerRegistration />} />
       </Routes>
     </React.Fragment>
   );

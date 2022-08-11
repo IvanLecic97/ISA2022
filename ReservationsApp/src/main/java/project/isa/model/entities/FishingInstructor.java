@@ -17,15 +17,17 @@ public class FishingInstructor extends Attraction {
     @Column(name = "FishingEquipment")
     private boolean fishingEquipment;
 
-    public FishingInstructor(Long id, String address, String country, String description, Double rates, Double price, boolean reserved, LocalDate startDate, LocalDate endDate, String image, Long ownerId, int maxGuests) {
-        super(id, address, country, description, rates, price, reserved, startDate, endDate, image, ownerId, maxGuests);
+    public FishingInstructor(Long id, String address, String country, String city, String description, Double rates, Double price,
+                             boolean reserved, LocalDate startDate, LocalDate endDate, String image, String ownerUsername, int maxGuests, String type) {
+        super(id, address, country, city, description, rates, price, reserved, startDate, endDate, image, ownerUsername, maxGuests, type);
     }
 
     public FishingInstructor() {
     }
 
-    public FishingInstructor(Long id, String address, String country, String description, Double rates, Double price, boolean reserved, LocalDate startDate, LocalDate endDate, String instructorInfo, boolean fishingEquipment, String image, Long ownerId, int maxGuests) {
-        super(id, address, country,description, rates, price, reserved, startDate, endDate, image, ownerId, maxGuests);
+    public FishingInstructor(Long id, String address, String country, String city, String description, Double rates, Double price,
+                             String type, boolean reserved, LocalDate startDate, LocalDate endDate, String instructorInfo, boolean fishingEquipment, String image, String ownerUsername, int maxGuests) {
+        super(id, address, country, city, description, rates, price, reserved, startDate, endDate, image, ownerUsername, maxGuests, type);
         this.instructorInfo = instructorInfo;
         this.fishingEquipment = fishingEquipment;
     }

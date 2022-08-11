@@ -32,6 +32,9 @@ public class ReservationService implements IReservationService {
     @Autowired
     private AttractionRepository attractionRepository;
 
+    @Autowired
+    private EmailSenderService emailSenderService;
+
     @Override
     public void saveReservation(Reservations reservations) {
         reservationsRepository.save(reservations);
@@ -50,16 +53,25 @@ public class ReservationService implements IReservationService {
 
        Reservations reservations = new Reservations();
 
-       Long ownerId = attractionRepository.getById(reservationDTO.getAttractionId()).getOwnerId();
+      // Long ownerId = attractionRepository.getById(reservationDTO.getAttractionId()).getOwnerId();
+       Long clientId = regUserService.getUser(reservationDTO.getUsername()).getId();
        reservations.setAttractionId(list1.get(0).getId());
-       reservations.setOwnerId(ownerId);
+       //reservations.setOwnerId(ownerId);
        reservations.setStartDate(LocalDate.parse(reservationDTO.getStartDate(), formatter));
        reservations.setEndDate(LocalDate.parse(reservationDTO.getEndDate(), formatter));
+       reservations.setClientId(clientId);
 
        Attraction a = attractionService.getById(reservationDTO.getAttractionId());
        a.setReserved(true);
        attractionRepository.save(a);
 
        reservationsRepository.save(reservations);
+
+       String msg = "You have successfully made  a reservation : " +
+               attractionService.getType(list1.get(0)) + " " +
+               attractionService.getById(list1.get(0).getId()).getName() + " " +
+               "from " + reservationDTO.getStartDate() + " to " + reservationDTO.getEndDate();
+        emailSenderService.sendSimpleEmail(reservationDTO.getUsername(), msg, "Reservation confirmaton" );
+
     }
 }

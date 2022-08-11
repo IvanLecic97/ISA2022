@@ -12,11 +12,12 @@ code {
     monospace;
 }
 
-.appLayout {
-  background-image: url("./main/css/img/westvirgina.jpg");
-  height: 100vh;
-}
-
 .ul {
   width: 180px;
+}
+
+.discountedEntity {
+  width: 220px;
+  color: red;
+  background-color: burlywood;
 }

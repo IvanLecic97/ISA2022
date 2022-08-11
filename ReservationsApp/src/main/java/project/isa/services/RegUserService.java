@@ -4,19 +4,27 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import project.isa.model.users.Client;
-import project.isa.model.users.RegUser;
-import project.isa.repository.ClientRepository;
-import project.isa.repository.RegUserRepository;
+import project.isa.Roles;
+import project.isa.dto.BungalowOwnerDTO;
+import project.isa.dto.FishingInstructorOwnerDTO;
+import project.isa.dto.ShipOwnerDTO;
+import project.isa.mappers.BungalowOwnerMapper;
+import project.isa.mappers.FishingInstructorOwnerMapper;
+import project.isa.mappers.ShipOwnerMapper;
+import project.isa.model.entities.Bungalow;
+import project.isa.model.users.*;
+import project.isa.repository.*;
 import project.isa.services.IServices.IRegUserService;
 
 import javax.crypto.Cipher;
+import javax.management.relation.Role;
 import javax.transaction.Transactional;
 import java.security.Key;
 import java.util.ArrayList;
@@ -44,6 +52,22 @@ public class RegUserService implements IRegUserService, UserDetailsService {
 
     @Autowired
     private EmailSenderService emailSenderService;
+
+    @Autowired
+    private BungalowOwnerRepository bungalowOwnerRepository;
+
+    @Autowired
+    private ShipOwnerRepository shipOwnerRepository;
+
+    @Autowired
+    private FishingInstructorOwnerRepository fishingInstructorOwnerRepository;
+
+    @Autowired
+    private AuthoritiesRepository authoritiesRepository;
+
+
+
+
 
     private static final String ALGO = "AES";
 
@@ -105,6 +129,12 @@ public class RegUserService implements IRegUserService, UserDetailsService {
             u.setUsername(user.getUsername());
             u.setActivated(false);
 
+            /*Authorities authorities = authoritiesRepository.findByName(Roles.ROLE_CLIENT);
+            List<Authorities> authorities1 = new ArrayList<Authorities>();
+            authorities1.add(authorities);
+            u.setAuthorities(authorities1); */
+
+
             String msg = "http://localhost:3000/confirm";
 
             emailSenderService.sendSimpleEmail(u.getUsername(), msg, "Mail messsage");
@@ -113,6 +143,61 @@ public class RegUserService implements IRegUserService, UserDetailsService {
         }
         else
             return null;
+    }
+
+    @Override
+    public BungalowOwnerDTO registerBungalowOwner(BungalowOwnerDTO bungalowOwnerDTO) {
+        if(regUserRepository.findByUsernameEquals(bungalowOwnerDTO.getUsername()) == null){
+            BungalowOwner bungalowOwner = BungalowOwnerMapper.INSTANCE.dtoToOwner(bungalowOwnerDTO);
+            bungalowOwner.setPassword(bCryptPasswordEncoder.encode(bungalowOwner.getPassword()));
+            bungalowOwner.setRole(Roles.ROLE_BUNGALOW_OWNER);
+            bungalowOwner.setActivated(false);
+            String msg = "http://localhost:3000/confirm";
+
+            emailSenderService.sendSimpleEmail(bungalowOwner.getUsername(), msg, "Mail messsage");
+            bungalowOwnerRepository.save(bungalowOwner);
+
+
+
+            return BungalowOwnerMapper.INSTANCE.ownerToDto(bungalowOwner);
+        }
+        return null;
+    }
+
+    @Override
+    public ShipOwnerDTO registerShipOwner(ShipOwnerDTO shipOwnerDTO) {
+        if(regUserRepository.findByUsernameEquals(shipOwnerDTO.getUsername()) == null){
+            ShipOwner shipOwner = ShipOwnerMapper.INSTANCE.dtoToOwner(shipOwnerDTO);
+            shipOwner.setPassword(bCryptPasswordEncoder.encode(shipOwner.getPassword()));
+            shipOwner.setRole(Roles.ROLE_SHIP_OWNER);
+            shipOwner.setActivated(false);
+            String msg = "http://localhost:3000/confirm";
+
+            emailSenderService.sendSimpleEmail(shipOwner.getUsername(), msg, "Mail messsage");
+            shipOwnerRepository.save(shipOwner);
+
+            return  ShipOwnerMapper.INSTANCE.ownerToDto(shipOwner);
+
+        }
+        return null;
+    }
+
+    @Override
+    public FishingInstructorOwnerDTO registerFishingInstructorOwner(FishingInstructorOwnerDTO fishingInstructorOwnerDTO) {
+        if(regUserRepository.findByUsernameEquals(fishingInstructorOwnerDTO.getUsername()) == null){
+            FishingInstructorOwner fishingInstructorOwner = FishingInstructorOwnerMapper.INSTANCE.dtoToOwner(fishingInstructorOwnerDTO);
+            fishingInstructorOwner.setPassword(bCryptPasswordEncoder.encode(fishingInstructorOwner.getPassword()));
+            fishingInstructorOwner.setRole(Roles.ROLE_FISHING_INSTRUCTOR);
+            fishingInstructorOwner.setActivated(false);
+            String msg = "http://localhost:3000/confirm";
+
+            emailSenderService.sendSimpleEmail(fishingInstructorOwner.getUsername(), msg, "Mail messsage");
+            fishingInstructorOwnerRepository.save(fishingInstructorOwner);
+
+            return  FishingInstructorOwnerMapper.INSTANCE.ownerToDto(fishingInstructorOwner);
+
+        }
+        return null;
     }
 
     @Override
@@ -144,5 +229,19 @@ public class RegUserService implements IRegUserService, UserDetailsService {
     }
 
 
+    @Override
+    public void addBungalowToOwner(Bungalow bungalow, String username) {
+        BungalowOwner bungalowOwner = bungalowOwnerRepository.findByUsername(username);
+        if(bungalowOwner.getBungalowsOwned() == null){
+            List<Bungalow> bungalows = new ArrayList<>();
+            bungalows.add(bungalow);
+            bungalowOwner.setBungalowsOwned(bungalows);
 
+        }
+        else {
+            bungalowOwner.getBungalowsOwned().add(bungalow);
+
+        }
+        bungalowOwnerRepository.save(bungalowOwner);
+    }
 }

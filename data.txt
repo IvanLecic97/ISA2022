@@ -1,0 +1,37 @@
+INSERT INTO isa_db.reg_user(id, activated, address, city, country, name, password, phone, role, surname, username) values (1, true, "Vojvodjanska 3", "Novi Sad", "Serbia", "Ivan", "$2a$12$KMC9z/Cu.gOJW1JCQgpBKuVxCsAkR2Zc5QuDQ6.iI9zqV1DqQBl2G", "+381640038947", "ROLE_CLIENT", "Lecic", "ika619@gmail.com");
+INSERT INTO isa_db.reg_user(id, activated, address, city, country, name, password, phone, role, surname, username) values (2, true, "Put Srba sa Neretve", "Nevesinje", "Republic of Srpska", "Nikolina", "$2a$12$KMC9z/Cu.gOJW1JCQgpBKuVxCsAkR2Zc5QuDQ6.iI9zqV1DqQBl2G", "+381640038949", "ROLE_BUNGALOW_OWNER", "Bestic", "bnikollina@gmail.com");
+INSERT INTO isa_db.reg_user(id, activated, address, city, country, name, password, phone, role, surname, username) values (3, true, "Stradun bb", "Dubrovnik", "Croatia", "Zorka", "$2a$12$KMC9z/Cu.gOJW1JCQgpBKuVxCsAkR2Zc5QuDQ6.iI9zqV1DqQBl2G", "+38765940058", "ROLE_SHIP_OWNER", "Lecic", "zorkap966@gmail.com");
+INSERT INTO isa_db.reg_user(id, activated, address, city, country, name, password, phone, role, surname, username) values (4, true, "Alekse Santica 4", "Mostar", "Republic of Srpska", "Ljubica", "$2a$12$KMC9z/Cu.gOJW1JCQgpBKuVxCsAkR2Zc5QuDQ6.iI9zqV1DqQBl2G", "+381640038941", "ROLE_FISHING_INSTRUCTOR", "Skocajic", "ljskocajic04@gmail.com");
+
+insert into isa_db.authorities(id, name) values (1, "ROLE_CLIENT");
+insert into isa_db.authorities(id, name) values (2, "ROLE_BUNGALOW_OWNER");
+insert into isa_db.authorities(id, name) values (3, "ROLE_SHIP_OWNER");
+insert into isa_db.authorities(id, name) values (4, "ROLE_FISHING_INSTRUCTOR");
+insert into isa_db.authorities(id, name) values (5, "ROLE_ADMIN");
+
+insert into isa_db.user_authority(user_id, authority_id) values (1, 1);
+insert into isa_db.user_authority(user_id, authority_id) values (2, 2);
+insert into isa_db.user_authority(user_id, authority_id) values (3, 3);
+insert into isa_db.user_authority(user_id, authority_id) values (4, 4);
+
+insert into isa_db.bungalow_owner (description, id) values ("Ima se, moze se", 2);
+insert into isa_db.ship_owner (description, id) values ("Malo cemo da se kupamo", 3);
+insert into isa_db.fishing_instructor_coach (description, id) values ("Pecanje nije zlocin", 4);
+
+insert into isa_db.attraction(id, address, city, country, description, end_date, image, max_guests, name, owner_username, price, rating, reserved, start_date, type) values(1, "Zalomski put bb", "Nevesinje", "Republic of Srpska", "Moderna vikendica u brdskom kraju", "2022-09-23", "vikendica_zalom.jpg", 8, "Zalomski dvorac", "bnikollina@gmail.com", 25, 0, false, "2022-09-20", "Bungalow");
+insert into isa_db.attraction(id, address, city, country, description, end_date, image, max_guests, name, owner_username, price, rating, reserved, start_date, type) values(2, "Hvarska 2", "Dubrovnik", "Croatia", "Odlican omanji brod za uzivanje na moru", "2022-08-28", "brod_dubrovnik.jpg", 12, "Jadranski dupin", "zorkap966@gmail.com", 40, 0, false, "2022-08-21", "Ship");
+insert into isa_db.attraction(id, address, city, country, description, end_date, image, max_guests, name, owner_username, price, rating, reserved, start_date, type) values(3, "Kralja Tomislava  2", "Stolac", "Republic of Srpska", "Prijatno pecanje na Bregavi", "2022-09-11", "bregava.jpg", 2, "Pecanje na Bregavi", "ljskocajic04@gmail.com", 15, 0, false, "2022-09-04", "Fishing instructor");
+
+insert into isa_db.bungalow(air_conditioner, fridge, kitchen_appliances, tv, wi_fi, id) values (false, true, true, false, false, 1);
+insert into isa_db.ship(mini_bar, pool, restaurant, id) values (true, false, true, 2);
+insert into isa_db.fishing_instructor (fishing_equipment, instructor_info, id) values (true, "Dobra, pouzdana i iskusna instruktorka", 3);
+
+insert into isa_db.bungalow_users(owner_id, bungalow_id) values (2, 1);
+insert into isa_db.ships_user(owner_id, ship_id) values (3, 2);
+insert into isa_db.instructor_users(owner_id, instructor_id) values (4, 3);
+
+
+
+
+
+

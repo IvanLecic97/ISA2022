@@ -20,6 +20,9 @@ public class Reservations {
     @Column(name = "Owner_Id")
     private Long ownerId;
 
+    @Column(name = "Client_Id")
+    private Long clientId;
+
     @Column(name = "Start_date")
     private LocalDate startDate;
 
@@ -30,10 +33,11 @@ public class Reservations {
     public Reservations() {
     }
 
-    public Reservations(Long id, Long attractionId, Long ownerId, LocalDate startDate, LocalDate endDate) {
+    public Reservations(Long id, Long attractionId, Long ownerId, Long clientId, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.attractionId = attractionId;
         this.ownerId = ownerId;
+        this.clientId = clientId;
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -76,5 +80,13 @@ public class Reservations {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 }

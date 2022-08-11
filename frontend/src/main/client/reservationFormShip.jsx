@@ -101,6 +101,7 @@ function ReservationFormShip() {
       startDate: date1,
 
       endDate: date2,
+      username: localStorage.getItem("username"),
     };
     const url = "http://localhost:8081/api/reservation/makeReservation";
     axios.post(url, data).then((response) => {
@@ -168,6 +169,7 @@ function ReservationFormShip() {
           </li>
         </ul>
       )}
+      <a href="/discountedPage">Discounted entities</a>
     </div>
   );
 }

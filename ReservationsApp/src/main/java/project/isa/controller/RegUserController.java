@@ -6,7 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import project.isa.dto.BungalowOwnerDTO;
+import project.isa.dto.FishingInstructorOwnerDTO;
+import project.isa.dto.ShipOwnerDTO;
+import project.isa.model.users.BungalowOwner;
 import project.isa.model.users.Client;
+import project.isa.model.users.FishingInstructorOwner;
 import project.isa.model.users.RegUser;
 import project.isa.repository.RegUserRepository;
 import project.isa.services.RegUserService;
@@ -40,6 +45,39 @@ public class RegUserController {
         }
         else
             return  new ResponseEntity<String>("error!", HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/registerBungalowOwner")
+    public ResponseEntity<?> registerBungalowOwner(@RequestBody BungalowOwnerDTO bungalowOwnerDTO){
+        BungalowOwnerDTO bungalowOwner = regUserService.registerBungalowOwner(bungalowOwnerDTO);
+        if(bungalowOwner != null)
+        {
+            return new ResponseEntity<BungalowOwnerDTO>(bungalowOwner, HttpStatus.OK);
+        }
+        else
+            return  new ResponseEntity<String>("error!", HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/registerShipOwner")
+    public ResponseEntity<?> registerShipOwner(@RequestBody ShipOwnerDTO shipOwnerDTO){
+        ShipOwnerDTO shipOwnerDTO1 = regUserService.registerShipOwner(shipOwnerDTO);
+        if(shipOwnerDTO1 != null){
+            return new ResponseEntity<ShipOwnerDTO>(shipOwnerDTO1, HttpStatus.OK);
+        }
+        else
+            return new ResponseEntity<String>("error!", HttpStatus.OK);
+
+    }
+
+    @PostMapping(value = "/registerFishingInstructorOwner")
+    public ResponseEntity<?> registerInstructor(@RequestBody FishingInstructorOwnerDTO fishingInstructorOwnerDTO){
+        FishingInstructorOwnerDTO fishingInstructorOwnerDTO1 = regUserService.registerFishingInstructorOwner(fishingInstructorOwnerDTO);
+        if(fishingInstructorOwnerDTO1 != null){
+            return new ResponseEntity<FishingInstructorOwnerDTO>(fishingInstructorOwnerDTO1, HttpStatus.OK);
+        }
+        else
+            return new ResponseEntity<String>("error!", HttpStatus.OK);
+
     }
 
     @PostMapping(value = "/confirmEmail/{email}")

@@ -1,28 +1,20 @@
 package project.isa.services;
 
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.isa.dto.AttractionDTO;
-import project.isa.dto.EntityFilterDTO;
+import project.isa.dto.BungalowDTO;
+import project.isa.mappers.BungalowMapper;
 import project.isa.model.entities.Attraction;
 import project.isa.model.entities.Bungalow;
 import project.isa.model.entities.FishingInstructor;
 import project.isa.model.entities.Ship;
-import project.isa.repository.AttractionRepository;
-import project.isa.repository.BungalowRepository;
-import project.isa.repository.FishingInstructorRepository;
-import project.isa.repository.ShipRepository;
+import project.isa.model.users.BungalowOwner;
+import project.isa.repository.*;
 import project.isa.services.IServices.IAttractionService;
 
-import javax.swing.text.html.parser.Entity;
-import javax.transaction.Transactional;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 
 @Service
@@ -39,6 +31,12 @@ public class AttractionService implements IAttractionService {
 
     @Autowired
     private AttractionRepository attractionRepository;
+
+    @Autowired
+    private BungalowOwnerRepository bungalowOwnerRepository;
+
+    @Autowired
+    private RegUserService regUserService;
 
 
 
@@ -122,5 +120,19 @@ public class AttractionService implements IAttractionService {
     public List<String> getAllCountries() {
 
         return attractionRepository.getAllDistinctCountries();
+    }
+
+    @Override
+    public BungalowDTO addBungalow(BungalowDTO bungalowDTO) {
+        System.out.println(bungalowDTO);
+        Bungalow bungalow = BungalowMapper.INSTANCE.dtoToBungalow(bungalowDTO);
+        bungalow.setType("Bungalow");
+        bungalowRepository.save(bungalow);
+
+        BungalowOwner bungalowOwner = bungalowOwnerRepository.findByUsername(bungalowDTO.getOwnerUsername());
+        bungalowOwner.addNewBungalow(bungalow);
+        bungalowOwnerRepository.save(bungalowOwner);
+
+        return BungalowMapper.INSTANCE.bungalowToDto(bungalow);
     }
 }

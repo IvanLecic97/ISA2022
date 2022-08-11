@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import project.isa.TimeProvider;
 import project.isa.model.users.RegUser;
+import project.isa.repository.RegUserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -19,7 +20,7 @@ public class TokenUtils {
     @Value("ReservationsAppBack")
     private String APP_NAME;
 
-    @Value("super_secret_code_value")
+    @Value("abcdefghijklmnOPQRSTUVWXYZ")
     private String SECRET;
 
 
@@ -40,18 +41,27 @@ public class TokenUtils {
     @Autowired
     private TimeProvider timeProvider;
 
+    @Autowired
+    private RegUserRepository regUserRepository;
+
     private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
 
     public String generateToken(String username) {
+        Claims claims = Jwts.claims().setSubject(username);
+        claims.put("authority", regUserRepository.findByUsernameEquals(username).getRole());
+
+
         return Jwts.builder()
                 .setIssuer(APP_NAME)
                 .setSubject(username)
+                .claim("authority", regUserRepository.findByUsernameEquals(username).getRole().toString())
+                //.setClaims(claims)
 //                .setAudience(generateAudience(device))
                 .setAudience(AUDIENCE_WEB)
                 .setIssuedAt(timeProvider.now())
                 .setExpiration(generateExpirationDate())
-                .signWith(SIGNATURE_ALGORITHM, SECRET).compact();
+                .signWith(SignatureAlgorithm.HS512, SECRET).compact();
     }
 
     private Date generateExpirationDate() {
@@ -117,7 +127,7 @@ public class TokenUtils {
 
     // Functions for getting data from token
 
-    private Claims getAllClaimsFromToken(String token) {
+    public Claims getAllClaimsFromToken(String token) {
         Claims claims;
         try {
             claims = Jwts.parser()

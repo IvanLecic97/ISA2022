@@ -9,18 +9,21 @@ public class ReservationDTO {
 
     private String username;
 
+    private Long clientId;
+
     private String startDate;
 
     private String endDate;
 
 
-    public ReservationDTO(Long id, Long attractionId, Long ownerId, String username, String startDate, String endDate) {
+    public ReservationDTO(Long id, Long attractionId, Long ownerId, Long clientId, String username, String startDate, String endDate) {
         Id = id;
         this.attractionId = attractionId;
         this.ownerId = ownerId;
         this.username = username;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.clientId = clientId;
     }
 
     public ReservationDTO() {
@@ -73,5 +76,13 @@ public class ReservationDTO {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 }

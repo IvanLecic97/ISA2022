@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.w3c.dom.Attr;
 import project.isa.dto.AttractionDTO;
+import project.isa.dto.BungalowDTO;
 import project.isa.dto.EntityFilterDTO;
 import project.isa.model.entities.Attraction;
 import project.isa.model.entities.Bungalow;
@@ -17,7 +18,8 @@ import project.isa.model.entities.FishingInstructor;
 import project.isa.model.entities.Ship;
 import project.isa.services.AttractionService;
 
-import java.net.http.HttpResponse;
+import javax.annotation.security.RolesAllowed;
+//import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +31,10 @@ public class AttractionController {
     @Autowired
     private AttractionService attractionService;
 
+    @RolesAllowed("ROLE_BUNGALOW_OWNER")
     @PostMapping(value = "/addBungalow")
-    public ResponseEntity<String> addBungalow(@RequestBody Bungalow bungalow){
-        Bungalow b = new Bungalow();
+    public ResponseEntity<String> addBungalow(@RequestBody BungalowDTO bungalowDTO){
+        /*Bungalow b = new Bungalow();
         b.setAirConditioner(bungalow.isAirConditioner());
         b.setFridge(bungalow.isFridge());
         b.setKitchenAppliances(bungalow.isKitchenAppliances());
@@ -46,9 +49,12 @@ public class AttractionController {
         b.setReserved(false);
         b.setCountry(bungalow.getCountry());
         b.setStartDate(bungalow.getStartDate());
-        attractionService.saveBungalow(b);
-
-        return new ResponseEntity<String>("Bungalow added!", HttpStatus.OK);
+        attractionService.saveBungalow(b); */
+        BungalowDTO bungalow = attractionService.addBungalow(bungalowDTO);
+        if(bungalow != null){
+            return new ResponseEntity<String>("Bungalow added!", HttpStatus.OK);
+        }
+        else return new ResponseEntity<String>("Error!!", HttpStatus.OK);
     }
 
     @PostMapping(value = "/addShip")
@@ -89,6 +95,7 @@ public class AttractionController {
     }
 
     @GetMapping(value = "/getAttractions")
+    @RolesAllowed("ROLE_CLIENT")
     public ResponseEntity<List<AttractionDTO>> getAllFreeAttractions(){
         List<Attraction> list1 = attractionService.getAllFreeAttractions();
         List<AttractionDTO> list2 = new ArrayList<AttractionDTO>();

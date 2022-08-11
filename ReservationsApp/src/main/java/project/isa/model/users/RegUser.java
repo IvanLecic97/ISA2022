@@ -1,16 +1,20 @@
 package project.isa.model.users;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class RegUser implements UserDetails {
     @Id
     @Column(name = "Id")
-    @SequenceGenerator(name="gen1",sequenceName = "gen11",initialValue = 1,allocationSize = 1)
+    @SequenceGenerator(name="gen1",sequenceName = "gen11",initialValue = 6,allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "gen1")
     private Long id;
 
@@ -46,7 +50,7 @@ public class RegUser implements UserDetails {
     @Column(name = "Role")
     private String role;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.REFRESH)
     @JoinTable(name = "user_authority",
     joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
@@ -183,12 +187,25 @@ public class RegUser implements UserDetails {
         this.activated = activated;
     }
 
-    public Collection<Authorities> getAuthorities() {
-        return authorities;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities1 = new ArrayList<>();
+        for(Authorities a : authorities){
+            authorities1.add(new SimpleGrantedAuthority(a.getName()));
+
+        }
+
+        return authorities1 ;
     }
 
-    public void setAuthorities(Collection<Authorities> authorities) {
-        this.authorities = authorities;
+    public void addNewAuthority(String authority){
+        Authorities auth = new Authorities();
+        auth.setName(authority);
+        this.authorities.add(auth);
+    }
+
+    public void addNewAuthorityObject(Authorities authorities){
+        this.authorities.add(authorities);
     }
 
     public String getRole() {
@@ -197,5 +214,13 @@ public class RegUser implements UserDetails {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setAuthorities(Collection<Authorities> authorities) {
+        this.authorities = authorities;
     }
 }

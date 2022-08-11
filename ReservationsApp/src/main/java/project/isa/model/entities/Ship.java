@@ -1,9 +1,10 @@
 package project.isa.model.entities;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import project.isa.model.users.RegUser;
+import project.isa.model.users.ShipOwner;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -20,6 +21,11 @@ public class Ship extends Attraction {
     @Column(name = "Restaurant")
     private boolean restaurant;
 
+    /*@OneToOne(mappedBy = "id")
+    private ShipOwner shipOwner;*/
+
+    
+
 
    // public Ship(Long id, String address, String description, Double rates, Double price, boolean reserved, LocalDateTime startDate, LocalDateTime endDate) {
     //    super(id, address, description, rates, price, reserved, startDate, endDate);
@@ -28,8 +34,9 @@ public class Ship extends Attraction {
     public Ship() {
     }
 
-    public Ship(Long id, String address, String country, String description, Double rates, Double price, boolean reserved, LocalDate startDate, LocalDate endDate, boolean miniBar, boolean pool, boolean restaurant, String image, Long ownerId, int maxGuests) {
-        super(id, address, country, description, rates, price, reserved, startDate, endDate, image, ownerId, maxGuests);
+    public Ship(Long id, String address, String country, String city, String description, Double rates, Double price, String type, boolean reserved,
+                LocalDate startDate, LocalDate endDate, boolean miniBar, boolean pool, boolean restaurant, String image, String ownerUsername, int maxGuests) {
+        super(id, address, country, city, description, rates, price, reserved, startDate, endDate, image, ownerUsername, maxGuests, type);
         this.miniBar = miniBar;
         this.pool = pool;
         this.restaurant = restaurant;

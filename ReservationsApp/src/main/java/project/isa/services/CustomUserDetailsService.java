@@ -83,6 +83,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
             RegUserDTO userRet = new RegUserDTO(user);
             userRet.setToken(new UserTokenState(jwt, expiresIn));
+            userRet.setId(null);
 
 
             return userRet;

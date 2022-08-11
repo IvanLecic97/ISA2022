@@ -26,9 +26,9 @@ public class Bungalow extends Attraction {
     public boolean kitchenAppliances;
 
 
-    public Bungalow(Long id, String address, String country, String description, Double rates, Double price, boolean reserved, LocalDate startDate,
-                    LocalDate endDate, boolean tv, boolean airConditioner, boolean wifi, boolean fridge, boolean kitchenAppliances, String image, Long ownerId, int maxGuests) {
-        super(id, address, country, description, rates, price, reserved, startDate, endDate, image, ownerId, maxGuests);
+    public Bungalow(Long id, String address, String country, String city, String description, Double rates, Double price, boolean reserved, LocalDate startDate,
+                    LocalDate endDate, boolean tv, boolean airConditioner, boolean wifi, boolean fridge, boolean kitchenAppliances, String image, String ownerUsername, int maxGuests, String type) {
+        super(id, address, country, city, description, rates, price, reserved, startDate, endDate, image, ownerUsername, maxGuests, type);
         this.tv = tv;
         this.airConditioner = airConditioner;
         this.wifi = wifi;
@@ -36,13 +36,13 @@ public class Bungalow extends Attraction {
         this.kitchenAppliances = kitchenAppliances;
     }
 
-    public Bungalow(boolean tv, boolean airConditioner, boolean wifi, boolean fridge, boolean kitchenAppliances) {
+    /*public Bungalow(boolean tv, boolean airConditioner, boolean wifi, boolean fridge, boolean kitchenAppliances) {
         this.tv = tv;
         this.airConditioner = airConditioner;
         this.wifi = wifi;
         this.fridge = fridge;
         this.kitchenAppliances = kitchenAppliances;
-    }
+    } */
 
     public Bungalow() {
     }
