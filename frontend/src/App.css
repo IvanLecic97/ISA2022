@@ -41,11 +41,11 @@
 .mainDiv {
   background-image: url("./main/css/img/westvirgina.jpg");
   background-size: cover;
-  background-position: top;
+  background-position: center;
   background-attachment: fixed;
   background-repeat: repeat-x;
   min-height: 100%;
-  height: 100vh;
+  height: auto;
   position: relative;
 }
 

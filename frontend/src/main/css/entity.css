@@ -38,6 +38,7 @@
 
 .filterBox {
   background-color: whitesmoke;
+  background-repeat: repeat-y;
   width: 500px;
   padding: 40px 50px;
   height: 280px;

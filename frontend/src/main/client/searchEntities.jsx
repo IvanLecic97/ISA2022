@@ -67,6 +67,7 @@ function SearchEntities() {
   const [state, dispatch] = useReducer(myReducer, []);
   const [startDateChanged, setStartDateChanged] = useState(false);
   const [endDateChanged, setEndDateChanged] = useState(false);
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   const url = "http://localhost:8081/api/attraction/getAttractions";
   const getAllCountries =
@@ -76,7 +77,11 @@ function SearchEntities() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const json = await response.json();
       console.log(json);
       setImportedList(json);
@@ -91,7 +96,11 @@ function SearchEntities() {
 
   const fetchCountries = async () => {
     try {
-      const response = await fetch(getAllCountries);
+      const response = await fetch(getAllCountries, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const json = await response.json();
       console.log(json);
       setCountriesList(json);
@@ -217,7 +226,7 @@ function SearchEntities() {
   };
 
   return (
-    <div>
+    <div className="mainDiv">
       <div className="filterBox">
         <div className="searchLabel">
           <label>Search entitites:</label> <br />

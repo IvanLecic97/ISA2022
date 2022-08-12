@@ -81,9 +81,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/registerFishingInstructorOwner").permitAll()
                 .antMatchers("/api/attraction/addBungalow").hasAuthority(Roles.ROLE_BUNGALOW_OWNER)
                 .antMatchers("/api/attraction/addShip").hasAuthority(Roles.ROLE_SHIP_OWNER)
-                .antMatchers("/api/attraction/addFishingInstructor").hasAuthority(Roles.ROLE_FISHING_INSTRUCTOR)
-                //.antMatchers("/api/**").permitAll()
-                .antMatchers("/api/attraction/getAttractions").hasAnyAuthority("ROLE_CLIENT")
+                .antMatchers("/api/attraction/getAttractions").hasAuthority(Roles.ROLE_CLIENT)
+                .antMatchers("/api/attraction/getAllCountries").hasAuthority(Roles.ROLE_CLIENT)
+                .antMatchers("/api/attraction/getAttractionById/**").hasAuthority(Roles.ROLE_CLIENT)
+                .antMatchers("/api/reservation/makeReservation").hasAuthority(Roles.ROLE_CLIENT)
+                .antMatchers("/api/reservation/makeDiscountReservation").hasAuthority(Roles.ROLE_CLIENT)
                 .anyRequest().authenticated().and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService, regUserRepository, authoritiesRepository), BasicAuthenticationFilter.class);
 

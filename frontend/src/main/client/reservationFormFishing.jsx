@@ -17,10 +17,15 @@ function ReservationFormFishing() {
   const [ogStartDate, setOgStartDate] = useState(new Date());
   const [ogEndDate, setOgEndDate] = useState(new Date());
   const [fishingEquipment, setFishingEquipment] = useState("Yes");
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   const fetchAttraction = async () => {
     try {
-      const var1 = await fetch(attractionUrl);
+      const var1 = await fetch(attractionUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const json = await var1.json();
       console.log(json);
 
@@ -97,9 +102,15 @@ function ReservationFormFishing() {
       username: localStorage.getItem("username"),
     };
     const url = "http://localhost:8081/api/reservation/makeReservation";
-    axios.post(url, data).then((response) => {
-      window.alert(response.data);
-    });
+    axios
+      .post(url, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        window.alert(response.data);
+      });
   };
 
   useEffect(() => {

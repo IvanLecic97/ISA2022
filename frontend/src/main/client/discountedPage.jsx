@@ -3,6 +3,7 @@ import ImageUploading from "react-images-uploading";
 import FileSaver, { saveAs } from "file-saver";
 import storage from "../../firebaseConfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import axios from "axios";
 
 function DiscountedPage() {
   const [loadedEntities, setLoadedEntities] = useState([]);
@@ -10,6 +11,10 @@ function DiscountedPage() {
   const [url, setUrl] = useState(
     "http://localhost:8081/api/discount/getDiscountedEntities"
   );
+  const [reserveUrl, setReserveUrl] = useState(
+    "http://localhost:8081/api/reservation/makeDiscountReservation"
+  );
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   const [images, setImages] = React.useState(null);
   const [percent, setPercent] = useState(0);
@@ -46,7 +51,11 @@ function DiscountedPage() {
 
   const loadEntities = async () => {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const json = await response.json();
       console.log(json);
       setLoadedEntities(json);
@@ -60,24 +69,40 @@ function DiscountedPage() {
     loadEntities();
   }, []);
 
+  function onConfirm(value, event) {
+    event.preventDefault();
+    const data = {
+      attractionId: value.attractionId,
+      oldPrice: value.oldPrice,
+      newPrice: value.newPrice,
+      username: value.username,
+      attractionName: value.attractionName,
+    };
+    axios
+      .post(reserveUrl, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        window.alert(res);
+      });
+  }
+
   return (
     <>
       <div>
-        <input className="uploader" type="file" onChange={onChangeFile} />
-        <button onClick={onShow}>Upload</button>
-        <p>{percent} "% done"</p>
-        {loading ? (
-          <h4>Loading...</h4>
-        ) : (
-          loadedEntities.map((value) => (
-            <ul className="discountedEntity" key={value.attractionId}>
-              <li>Attraction name : {value.attractionName}</li>
-              <li>Old price : {value.oldPrice}</li>
-              <li>New price : {value.newPrice}</li>
-              <li>Owner username : {value.username}</li>
-            </ul>
-          ))
-        )}
+        {loadedEntities.map((value) => (
+          <ul className="discountedEntity" key={value.attractionId}>
+            <li>Attraction name : {value.attractionName}</li>
+            <li>Old price : {value.oldPrice}</li>
+            <li>New price : {value.newPrice}</li>
+            <li>Owner username : {value.username}</li>
+            <button onClick={(event) => onConfirm(value, event)}>
+              Make reservation!
+            </button>
+          </ul>
+        ))}
       </div>
     </>
   );

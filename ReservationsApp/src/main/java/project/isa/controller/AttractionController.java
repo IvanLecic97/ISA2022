@@ -3,6 +3,7 @@ package project.isa.controller;
 
 import com.sun.mail.iap.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -112,6 +113,7 @@ public class AttractionController {
         return new ResponseEntity<List<AttractionDTO>>(list2, HttpStatus.OK);
     }
 
+    @RolesAllowed(Roles.ROLE_CLIENT)
     @GetMapping(value = "/getType")
     public ResponseEntity<List<String>> getType(){
         List<String> retList = new ArrayList<>();
@@ -122,6 +124,7 @@ public class AttractionController {
         return new ResponseEntity<List<String>>(retList, HttpStatus.OK);
     }
 
+    @RolesAllowed(Roles.ROLE_CLIENT)
     @GetMapping(value = "/getTypeOf")
     public ResponseEntity<List<AttractionDTO>> getTypeof(){
         List<AttractionDTO> retVal = attractionService.getTypes();
@@ -131,11 +134,13 @@ public class AttractionController {
 
     }
 
+    @RolesAllowed(Roles.ROLE_CLIENT)
     @GetMapping(value = "/getAllCountries")
     public ResponseEntity<List<String>> getAllCountries(){
         return new ResponseEntity<List<String>>(attractionService.getAllCountries(), HttpStatus.OK);
     }
 
+    @RolesAllowed(Roles.ROLE_CLIENT)
     @GetMapping(value = "/getAttractionById/{id}")
     public ResponseEntity<Attraction> getAttractionByID(@PathVariable Long id){
         return new ResponseEntity<Attraction>(attractionService.getById(id), HttpStatus.OK);
