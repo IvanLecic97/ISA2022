@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import project.isa.Roles;
 import project.isa.dto.BungalowOwnerDTO;
 import project.isa.dto.FishingInstructorOwnerDTO;
+import project.isa.dto.RegDisapprovedDTO;
 import project.isa.dto.ShipOwnerDTO;
 import project.isa.mappers.BungalowOwnerMapper;
 import project.isa.mappers.FishingInstructorOwnerMapper;
@@ -65,6 +66,9 @@ public class RegUserService implements IRegUserService, UserDetailsService {
     @Autowired
     private AuthoritiesRepository authoritiesRepository;
 
+    @Autowired
+    private RegistrationRequestRepository registrationRequestRepository;
+
 
 
 
@@ -106,10 +110,10 @@ public class RegUserService implements IRegUserService, UserDetailsService {
     @Override
    public RegUser getUser(String username)
     {
-        RegUser user = regUserRepository.findByUsernameEquals(username);
+        ;
 
 
-        return user;
+        return regUserRepository.findByUsername(username);
     }
 
 
@@ -152,10 +156,11 @@ public class RegUserService implements IRegUserService, UserDetailsService {
             bungalowOwner.setPassword(bCryptPasswordEncoder.encode(bungalowOwner.getPassword()));
             bungalowOwner.setRole(Roles.ROLE_BUNGALOW_OWNER);
             bungalowOwner.setActivated(false);
-            String msg = "http://localhost:3000/confirm";
-
-            emailSenderService.sendSimpleEmail(bungalowOwner.getUsername(), msg, "Mail messsage");
             bungalowOwnerRepository.save(bungalowOwner);
+
+            RegistrationRequest registrationRequest = new RegistrationRequest();
+            registrationRequest.setUserUsername(bungalowOwner.getUsername());
+            registrationRequestRepository.save(registrationRequest);
 
 
 
@@ -171,10 +176,11 @@ public class RegUserService implements IRegUserService, UserDetailsService {
             shipOwner.setPassword(bCryptPasswordEncoder.encode(shipOwner.getPassword()));
             shipOwner.setRole(Roles.ROLE_SHIP_OWNER);
             shipOwner.setActivated(false);
-            String msg = "http://localhost:3000/confirm";
-
-            emailSenderService.sendSimpleEmail(shipOwner.getUsername(), msg, "Mail messsage");
             shipOwnerRepository.save(shipOwner);
+
+            RegistrationRequest registrationRequest = new RegistrationRequest();
+            registrationRequest.setUserUsername(shipOwner.getUsername());
+            registrationRequestRepository.save(registrationRequest);
 
             return  ShipOwnerMapper.INSTANCE.ownerToDto(shipOwner);
 
@@ -189,10 +195,13 @@ public class RegUserService implements IRegUserService, UserDetailsService {
             fishingInstructorOwner.setPassword(bCryptPasswordEncoder.encode(fishingInstructorOwner.getPassword()));
             fishingInstructorOwner.setRole(Roles.ROLE_FISHING_INSTRUCTOR);
             fishingInstructorOwner.setActivated(false);
-            String msg = "http://localhost:3000/confirm";
-
-            emailSenderService.sendSimpleEmail(fishingInstructorOwner.getUsername(), msg, "Mail messsage");
             fishingInstructorOwnerRepository.save(fishingInstructorOwner);
+
+            RegistrationRequest registrationRequest = new RegistrationRequest();
+            registrationRequest.setUserUsername(fishingInstructorOwner.getUsername());
+            registrationRequestRepository.save(registrationRequest);
+
+
 
             return  FishingInstructorOwnerMapper.INSTANCE.ownerToDto(fishingInstructorOwner);
 
@@ -243,5 +252,31 @@ public class RegUserService implements IRegUserService, UserDetailsService {
 
         }
         bungalowOwnerRepository.save(bungalowOwner);
+    }
+
+    @Override
+    public void approveOwnerRegistration(String username) {
+        RegUser regUser = regUserRepository.findByUsername(username);
+        regUser.setActivated(true);
+        regUserRepository.save(regUser);
+        Long reqId = registrationRequestRepository.findByUserUsername(username).getId();
+        registrationRequestRepository.deleteById(reqId);
+
+        emailSenderService.sendSimpleEmail(regUser.getUsername(), "Your registration has been approved!", "Mail messsage");
+
+    }
+
+    @Override
+    public void disApproveOwnerRegistration(RegDisapprovedDTO regDisapprovedDTO) {
+        RegUser regUser = regUserRepository.findByUsername(regDisapprovedDTO.getUsername());
+        regUserRepository.deleteById(regUser.getId());
+
+        Long reqId = registrationRequestRepository.findByUserUsername(regDisapprovedDTO.getUsername()).getId();
+        registrationRequestRepository.deleteById(reqId);
+
+        emailSenderService.sendSimpleEmail(regDisapprovedDTO.getUsername(), "Your registration has been rejeceted." +
+                        " Reason: " + regDisapprovedDTO.getMessage(),
+                "Registration rejected");
+
     }
 }

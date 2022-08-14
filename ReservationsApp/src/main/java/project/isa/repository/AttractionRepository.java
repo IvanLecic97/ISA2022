@@ -15,6 +15,10 @@ public interface AttractionRepository extends JpaRepository<Attraction, Long> {
     public Attraction findByIdEquals(Long id);
     public List<Attraction> findAllByReservedEquals(boolean value);
 
+    List<Attraction> findByOwnerUsername(String ownerUsername);
+
+
+
 
 
     @Query("SELECT DISTINCT a.country from Attraction a")

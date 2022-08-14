@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.w3c.dom.Attr;
@@ -16,6 +17,7 @@ import project.isa.model.entities.Attraction;
 import project.isa.model.entities.Bungalow;
 import project.isa.model.entities.FishingInstructor;
 import project.isa.model.entities.Ship;
+import project.isa.model.users.RegUser;
 import project.isa.services.AttractionService;
 
 import javax.annotation.security.RolesAllowed;
@@ -140,10 +142,42 @@ public class AttractionController {
         return new ResponseEntity<List<String>>(attractionService.getAllCountries(), HttpStatus.OK);
     }
 
-    @RolesAllowed(Roles.ROLE_CLIENT)
+    @RolesAllowed({Roles.ROLE_CLIENT, Roles.ROLE_BUNGALOW_OWNER, Roles.ROLE_SHIP_OWNER, Roles.ROLE_FISHING_INSTRUCTOR})
     @GetMapping(value = "/getAttractionById/{id}")
     public ResponseEntity<Attraction> getAttractionByID(@PathVariable Long id){
         return new ResponseEntity<Attraction>(attractionService.getById(id), HttpStatus.OK);
+    }
+
+    @RolesAllowed(Roles.ROLE_BUNGALOW_OWNER)
+    @GetMapping(value = "/getUsersBungalows")
+    public ResponseEntity<List<Bungalow>> getUsersBungalows(){
+        RegUser user = (RegUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return new ResponseEntity<List<Bungalow>>(attractionService.getUsersBungalows(user.getUsername()), HttpStatus.OK);
+    }
+
+    @RolesAllowed(Roles.ROLE_SHIP_OWNER)
+    @GetMapping(value = "/getUsersShips")
+    public ResponseEntity<List<Ship>> getUsersShips(){
+        RegUser user = (RegUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return new ResponseEntity<>(attractionService.getUsersShips(user.getUsername()), HttpStatus.OK);
+    }
+
+    @RolesAllowed(Roles.ROLE_FISHING_INSTRUCTOR)
+    @GetMapping(value = "/getUsersInstructors")
+    public ResponseEntity<List<FishingInstructor>> getUsersInstructors(){
+        RegUser user = (RegUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return new ResponseEntity<>(attractionService.getUsersInstructors(user.getUsername()), HttpStatus.OK);
+    }
+
+    @RolesAllowed({Roles.ROLE_FISHING_INSTRUCTOR, Roles.ROLE_SHIP_OWNER, Roles.ROLE_BUNGALOW_OWNER})
+    @GetMapping(value = "/getUsersAttractions")
+    public ResponseEntity<List<Attraction>> getUsersAttractions(){
+        RegUser user = (RegUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return new ResponseEntity<>(attractionService.getUsersAttractions(user.getUsername()), HttpStatus.OK);
     }
 
 }

@@ -2,6 +2,7 @@ package project.isa.services.IServices;
 
 import project.isa.dto.BungalowOwnerDTO;
 import project.isa.dto.FishingInstructorOwnerDTO;
+import project.isa.dto.RegDisapprovedDTO;
 import project.isa.dto.ShipOwnerDTO;
 import project.isa.model.entities.Bungalow;
 import project.isa.model.users.BungalowOwner;
@@ -23,4 +24,8 @@ public interface IRegUserService {
     FishingInstructorOwnerDTO registerFishingInstructorOwner(FishingInstructorOwnerDTO fishingInstructorOwnerDTO);
 
     void addBungalowToOwner(Bungalow bungalow, String username);
+
+    void approveOwnerRegistration(String username);
+
+    void disApproveOwnerRegistration(RegDisapprovedDTO regDisapprovedDTO);
 }

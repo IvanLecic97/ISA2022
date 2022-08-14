@@ -6,16 +6,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import project.isa.Roles;
 import project.isa.dto.BungalowOwnerDTO;
 import project.isa.dto.FishingInstructorOwnerDTO;
+import project.isa.dto.RegDisapprovedDTO;
 import project.isa.dto.ShipOwnerDTO;
-import project.isa.model.users.BungalowOwner;
-import project.isa.model.users.Client;
-import project.isa.model.users.FishingInstructorOwner;
-import project.isa.model.users.RegUser;
+import project.isa.model.users.*;
 import project.isa.repository.RegUserRepository;
 import project.isa.services.RegUserService;
+import project.isa.services.RegistrationRequestsService;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @Controller
@@ -24,6 +25,9 @@ import java.util.List;
 public class RegUserController {
     @Autowired
     private RegUserService regUserService;
+
+    @Autowired
+    private RegistrationRequestsService registrationRequestsService;
 
 
 
@@ -115,6 +119,34 @@ public class RegUserController {
         return new ResponseEntity<String>("Updated!", HttpStatus.OK);
 
     }
+
+    @RolesAllowed(Roles.ROLE_ADMIN)
+    @PostMapping(value = "/approveRegistration")
+    public ResponseEntity<?> approveRegistration(@RequestBody RegDisapprovedDTO regDisapprovedDTO){
+        regUserService.approveOwnerRegistration(regDisapprovedDTO.getUsername());
+        return new ResponseEntity<>("Done", HttpStatus.OK);
+    }
+
+    @RolesAllowed(Roles.ROLE_ADMIN)
+    @PostMapping(value = "/disApproveRegistration")
+    public ResponseEntity<?> disApproveRegistration(@RequestBody RegDisapprovedDTO regDisapprovedDTO){
+        regUserService.disApproveOwnerRegistration(regDisapprovedDTO);
+        return new ResponseEntity<>("Done", HttpStatus.OK);
+    }
+
+    @RolesAllowed(Roles.ROLE_ADMIN)
+    @GetMapping(value = "/getRegistrationRequests")
+    public ResponseEntity<List<RegistrationRequest>> getRegRequests(){
+        return new ResponseEntity<List<RegistrationRequest>>(registrationRequestsService.getAllRequests(), HttpStatus.OK);
+    }
+
+    @RolesAllowed(Roles.ROLE_ADMIN)
+    @GetMapping(value = "/getUserByUsername/{username}")
+    public ResponseEntity<RegUser> getUserByUsername(@PathVariable String username){
+        return new ResponseEntity<>(regUserService.getUser(username), HttpStatus.OK);
+    }
+
+
 
 
 }

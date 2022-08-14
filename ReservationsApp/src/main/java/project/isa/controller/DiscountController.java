@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import project.isa.Roles;
 import project.isa.dto.AttractionDTO;
 import project.isa.dto.DiscountedEntityDTO;
 import project.isa.services.DiscountedEntityService;
 
 //import java.net.http.HttpResponse;
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @Controller
@@ -25,6 +27,7 @@ public class DiscountController {
 
 
 
+    @RolesAllowed({Roles.ROLE_FISHING_INSTRUCTOR, Roles.ROLE_SHIP_OWNER, Roles.ROLE_BUNGALOW_OWNER})
     @PostMapping(value = "/setDiscountedEntity")
     public ResponseEntity<String> setDiscountedEntity(@RequestBody DiscountedEntityDTO discountedEntityDTO){
         discountedEntityService.setEntityOnDiscount(discountedEntityDTO);

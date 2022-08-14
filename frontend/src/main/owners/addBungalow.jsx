@@ -131,6 +131,7 @@ function AddBungalow() {
       airConditioner: airConditioner,
       wifi: wifi,
       fridge: fridge,
+      type: "Bungalow",
     };
     uploadPhoto();
     axios

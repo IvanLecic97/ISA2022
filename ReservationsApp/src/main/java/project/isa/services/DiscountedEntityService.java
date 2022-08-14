@@ -33,13 +33,14 @@ public class DiscountedEntityService implements IDiscountedEntityService {
     public void setEntityOnDiscount(DiscountedEntityDTO discountedEntityDTO) {
         DiscountedEntity discountedEntity = new DiscountedEntity();
 
+
         discountedEntity.setAttractionId(discountedEntityDTO.getAttractionId());
         discountedEntity.setOldPrice(discountedEntityDTO.getOldPrice());
         discountedEntity.setNewPrice(discountedEntityDTO.getNewPrice());
 
         discountedEntityRepository.save(discountedEntity);
 
-        emailSenderService.sendSimpleEmail(discountedEntityDTO.getUsername(), "Made a reservation on discounted entity", "Discounted reservation");
+        //emailSenderService.sendSimpleEmail(discountedEntityDTO.getUsername(), "Made a reservation on discounted entity", "Discounted reservation");
 
     }
 

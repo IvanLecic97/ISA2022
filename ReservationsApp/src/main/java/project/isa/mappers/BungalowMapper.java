@@ -12,4 +12,6 @@ public interface BungalowMapper {
 
     BungalowDTO bungalowToDto(Bungalow bungalow);
     Bungalow dtoToBungalow(BungalowDTO bungalowDTO);
+
+
 }

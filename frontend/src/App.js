@@ -25,6 +25,10 @@ import AddBungalow from "./main/owners/addBungalow";
 import OwnerRegistration from "./main/ownerRegistration";
 import AddShip from "./main/owners/addShip";
 import AddInstructor from "./main/owners/addInstructor";
+import GetOwnAttractions from "./main/owners/getOwnAttractions";
+import SetDiscount from "./main/owners/setDiscount";
+import RegistrationRequests from "./main/admin/registrationRequests";
+import RegistrationEntity from "./main/admin/registrationEntity";
 
 const App = () => {
   const [value, setValue] = useState(true);
@@ -88,6 +92,13 @@ const App = () => {
         <Route path="/ownerRegistration" element={<OwnerRegistration />} />
         <Route path="/addShip" element={<AddShip />} />
         <Route path="addInstructor" element={<AddInstructor />} />
+        <Route path="/getOwnAttractions" element={<GetOwnAttractions />} />
+        <Route path="/setDiscount" element={<SetDiscount />} />
+        <Route
+          path="/registrationRequests"
+          element={<RegistrationRequests />}
+        />
+        <Route path="/registrationEntity" element={<RegistrationEntity />} />
       </Routes>
     </React.Fragment>
   );

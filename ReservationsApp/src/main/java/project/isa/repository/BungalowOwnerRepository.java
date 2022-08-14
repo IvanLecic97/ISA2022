@@ -10,4 +10,6 @@ public interface BungalowOwnerRepository extends JpaRepository<BungalowOwner, Lo
 
 
 
+
+
 }

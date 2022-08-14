@@ -171,4 +171,25 @@ public class AttractionService implements IAttractionService {
 
         return FishingInstructorMapper.INSTANCE.instructorToDto(fishingInstructor);
     }
+
+
+    @Override
+    public List<Bungalow> getUsersBungalows(String username) {
+        return bungalowRepository.findByOwnerUsername(username);
+    }
+
+    @Override
+    public List<Ship> getUsersShips(String username) {
+        return shipRepository.findByOwnerUsername(username);
+    }
+
+    @Override
+    public List<FishingInstructor> getUsersInstructors(String username) {
+        return fishingInstructorRepository.findByOwnerUsername(username);
+    }
+
+    @Override
+    public List<Attraction> getUsersAttractions(String username) {
+        return attractionRepository.findByOwnerUsername(username);
+    }
 }

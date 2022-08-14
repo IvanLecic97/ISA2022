@@ -29,5 +29,13 @@ public interface IAttractionService  {
 
     FishingInstructorDTO addFishingInstructor(FishingInstructorDTO fishingInstructorDTO);
 
+    List<Bungalow> getUsersBungalows(String username);
+
+    List<Ship> getUsersShips(String username);
+
+    List<FishingInstructor> getUsersInstructors(String username);
+
+    List<Attraction> getUsersAttractions(String username);
+
 
 }

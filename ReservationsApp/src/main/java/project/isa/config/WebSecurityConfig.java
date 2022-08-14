@@ -83,9 +83,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/attraction/addShip").hasAuthority(Roles.ROLE_SHIP_OWNER)
                 .antMatchers("/api/attraction/getAttractions").hasAuthority(Roles.ROLE_CLIENT)
                 .antMatchers("/api/attraction/getAllCountries").hasAuthority(Roles.ROLE_CLIENT)
-                .antMatchers("/api/attraction/getAttractionById/**").hasAuthority(Roles.ROLE_CLIENT)
+                .antMatchers("/api/attraction/getAttractionById/**").hasAnyAuthority(Roles.ROLE_CLIENT, Roles.ROLE_BUNGALOW_OWNER, Roles.ROLE_SHIP_OWNER, Roles.ROLE_FISHING_INSTRUCTOR )
                 .antMatchers("/api/reservation/makeReservation").hasAuthority(Roles.ROLE_CLIENT)
                 .antMatchers("/api/reservation/makeDiscountReservation").hasAuthority(Roles.ROLE_CLIENT)
+                .antMatchers("/api/attraction/getUsersBungalows").hasAuthority(Roles.ROLE_BUNGALOW_OWNER)
+                .antMatchers("/api/attraction/getUsersShips").hasAuthority(Roles.ROLE_SHIP_OWNER)
+                .antMatchers("/api/attraction/getUsersInstructors").hasAuthority(Roles.ROLE_FISHING_INSTRUCTOR)
+                .antMatchers("/api/discount/setDiscountedEntity").hasAnyAuthority(Roles.ROLE_BUNGALOW_OWNER, Roles.ROLE_SHIP_OWNER, Roles.ROLE_FISHING_INSTRUCTOR )
+                .antMatchers("/api/user/approveRegistration").hasAuthority(Roles.ROLE_ADMIN)
+                .antMatchers("/api/user/disApproveRegistration").hasAuthority(Roles.ROLE_ADMIN)
+                .antMatchers("/api/user/getRegistrationRequests").hasAuthority(Roles.ROLE_ADMIN)
+                .antMatchers("/api/user/getUserByUsername/**").hasAuthority(Roles.ROLE_ADMIN)
                 .anyRequest().authenticated().and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService, regUserRepository, authoritiesRepository), BasicAuthenticationFilter.class);
 
