@@ -20,16 +20,19 @@ insert into isa_db.bungalow_owner (description, id) values ("Ima se, moze se", 2
 insert into isa_db.ship_owner (description, id) values ("Malo cemo da se kupamo", 3);
 insert into isa_db.fishing_instructor_coach (description, id) values ("Pecanje nije zlocin", 4);
 
-insert into isa_db.attraction(id, address, city, country, description, end_date, image, max_guests, name, owner_username, price, rating, reserved, start_date, type) values(1, "Zalomski put bb", "Nevesinje", "Republic of Srpska", "Moderna vikendica u brdskom kraju", "2022-09-23", "vikendica_zalom.jpg", 8, "Zalomski dvorac", "bnikollina@gmail.com", 25, 0, false, "2022-09-20", "Bungalow");
-insert into isa_db.attraction(id, address, city, country, description, end_date, image, max_guests, name, owner_username, price, rating, reserved, start_date, type) values(2, "Hvarska 2", "Dubrovnik", "Croatia", "Odlican omanji brod za uzivanje na moru", "2022-08-28", "brod_dubrovnik.jpg", 12, "Jadranski dupin", "zorkap966@gmail.com", 40, 0, false, "2022-08-21", "Ship");
-insert into isa_db.attraction(id, address, city, country, description, end_date, image, max_guests, name, owner_username, price, rating, reserved, start_date, type) values(3, "Kralja Tomislava  2", "Stolac", "Republic of Srpska", "Prijatno pecanje na Bregavi", "2022-09-11", "bregava.jpg", 2, "Pecanje na Bregavi", "ljskocajic04@gmail.com", 15, 0, false, "2022-09-04", "Fishing instructor");
+insert into isa_db.attraction(id, address, city, country, description, end_date, image, max_guests, name, owner_username, price, rating, start_date, type) values(1, "Zalomski put bb", "Nevesinje", "Republic of Srpska", "Moderna vikendica u brdskom kraju", "2022-09-23", "vikendica_zalom.jpg", 8, "Zalomski dvorac", "bnikollina@gmail.com", 25, 0, "2022-09-20", "Bungalow");
+insert into isa_db.attraction(id, address, city, country, description, end_date, image, max_guests, name, owner_username, price, rating, start_date, type) values(2, "Hvarska 2", "Dubrovnik", "Croatia", "Odlican omanji brod za uzivanje na moru", "2022-08-28", "brod_dubrovnik.jpg", 12, "Jadranski dupin", "zorkap966@gmail.com", 40, 0, "2022-08-21", "Ship");
+insert into isa_db.attraction(id, address, city, country, description, end_date, image, max_guests, name, owner_username, price, rating, start_date, type) values(3, "Kralja Tomislava  2", "Stolac", "Republic of Srpska", "Prijatno pecanje na Bregavi", "2022-09-11", "bregava.jpg", 2, "Pecanje na Bregavi", "ljskocajic04@gmail.com", 15, 0, "2022-09-04", "Fishing instructor");
+insert into isa_db.attraction(id, address, city, country, description, end_date, image, max_guests, name, owner_username, price, rating, start_date, type) values(4, "Dalmatinska 7", "Dubrovnik", "Croatia", "Malena jahta pogodna za odmor manje grupe ljudi", "2022-09-28", "jahta_dubrovnik.jpg", 8, "Kukac", "zorkap966@gmail.com", 25, 9, "2022-09-03", "Ship");
 
 insert into isa_db.bungalow(air_conditioner, fridge, kitchen_appliances, tv, wi_fi, id) values (false, true, true, false, false, 1);
 insert into isa_db.ship(mini_bar, pool, restaurant, id) values (true, false, true, 2);
+insert into isa_db.ship(mini_bar, pool, restaurant, id) values(true, false, false, 4);
 insert into isa_db.fishing_instructor (fishing_equipment, instructor_info, id) values (true, "Dobra, pouzdana i iskusna instruktorka", 3);
 
 insert into isa_db.bungalow_users(owner_id, bungalow_id) values (2, 1);
 insert into isa_db.ships_user(owner_id, ship_id) values (3, 2);
+insert into isa_db.ships_user(owner_id, ship_id) values (3, 4);
 insert into isa_db.instructor_users(owner_id, instructor_id) values (4, 3);
 
 

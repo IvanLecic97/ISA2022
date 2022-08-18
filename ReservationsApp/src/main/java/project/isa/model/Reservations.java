@@ -10,8 +10,8 @@ public class Reservations {
 
     @Id
     @Column(name = "Id")
-    @SequenceGenerator(name="gen1",sequenceName = "gen11",initialValue = 1,allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "gen1")
+    @SequenceGenerator(name="genRes",sequenceName = "genRes",initialValue = 1,allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "genRes")
     private Long id;
 
     @Column(name = "Attraction_Id")

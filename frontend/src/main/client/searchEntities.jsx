@@ -226,7 +226,7 @@ function SearchEntities() {
   };
 
   return (
-    <div className="mainDiv">
+    <div className="searchDiv">
       <div className="filterBox">
         <div className="searchLabel">
           <label>Search entitites:</label> <br />
@@ -281,8 +281,9 @@ function SearchEntities() {
       <div className="shownEntities">
         {state.state &&
           state.state.map((value) => (
-            <li key={value.attraction.id}>
+            <li key={value.id}>
               <Entity entity={value} />)
+              <DatePicker />
             </li>
           ))}
       </div>

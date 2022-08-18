@@ -43,6 +43,7 @@ function GetOwnAttractions() {
                 Set on discount
               </button>{" "}
               <br />
+              <div></div>
               <li style={{ color: "blue" }}>Name : {value.name}</li>
               <li style={{ color: "blue" }}>Address : {value.address}</li>
               <li style={{ color: "blue" }}>City : {value.city}</li>

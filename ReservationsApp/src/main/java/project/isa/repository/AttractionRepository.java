@@ -13,9 +13,13 @@ public interface AttractionRepository extends JpaRepository<Attraction, Long> {
     public List<Attraction> findAllByPriceLessThanEqual(double price);
     public List<Attraction> findAllByStartDateIsGreaterThanEqual(LocalDate startDate);
     public Attraction findByIdEquals(Long id);
-    public List<Attraction> findAllByReservedEquals(boolean value);
 
     List<Attraction> findByOwnerUsername(String ownerUsername);
+
+    List<Attraction> findByEndDateBefore(LocalDate endDate);
+
+
+
 
 
 

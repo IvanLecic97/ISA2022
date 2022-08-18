@@ -94,6 +94,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/disApproveRegistration").hasAuthority(Roles.ROLE_ADMIN)
                 .antMatchers("/api/user/getRegistrationRequests").hasAuthority(Roles.ROLE_ADMIN)
                 .antMatchers("/api/user/getUserByUsername/**").hasAuthority(Roles.ROLE_ADMIN)
+                .antMatchers("/api/reservation/getAllByAttractionId/**").hasAuthority(Roles.ROLE_CLIENT)
+
                 .anyRequest().authenticated().and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService, regUserRepository, authoritiesRepository), BasicAuthenticationFilter.class);
 

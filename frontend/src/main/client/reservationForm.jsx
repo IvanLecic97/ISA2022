@@ -20,6 +20,8 @@ function ReservationForm() {
   const [ogStartDate, setOgStartDate] = useState(new Date());
   const [ogEndDate, setOgEndDate] = useState(new Date());
   const [token, setToken] = useState(localStorage.getItem("token"));
+  const [freeDates, setFreeDates] = useState([]);
+  const [reservations, setReservations] = useState([]);
 
   const fetchAttraction = async () => {
     try {
@@ -126,8 +128,46 @@ function ReservationForm() {
       });
   };
 
+  const loadReservations = async () => {
+    const attractionId = localStorage.getItem("attractionId");
+    const url =
+      "http://localhost:8081/api/reservation/getAllByAttractionId/" +
+      attractionId;
+    try {
+      const data = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data1 = await data.json();
+      let list = [];
+      data1.forEach((value) => {
+        let smth = {
+          start: new Date(value.startDate),
+          end: new Date(value.endDate),
+        };
+        list.push(smth);
+      });
+      console.log(list);
+      console.log(data1);
+      setReservations(data1);
+      setFreeDates(list);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const onChangeRange = (dates) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+    console.log(startDate);
+    console.log(endDate);
+  };
+
   useEffect(() => {
     console.log(attractionUrl);
+    loadReservations();
     fetchAttraction();
 
     console.log(startDate.getTime() + 1);
@@ -156,19 +196,18 @@ function ReservationForm() {
             <label>Max guests allowed: {attraction.maxGuests}</label>
           </li>
           <li>
-            <label>Starting day : </label>
+            <label>Free dates</label>
             <DatePicker
-              dateFormat={"yyyy/MM/dd"}
-              selected={startDate}
-              onChange={(date) => onChangeStartDate(date)}
-            />
-          </li>
-          <li>
-            <label>Final day : </label>
-            <DatePicker
-              dateFormat={"yyyy/MM/dd"}
-              selected={endDate}
-              onChange={(date) => onChangeEndDate(date)}
+              selectsRange
+              selected={null}
+              onChange={onChangeRange}
+              startDate={startDate}
+              endDate={endDate}
+              minDate={ogStartDate}
+              maxDate={ogEndDate}
+              isClearable={true}
+              excludeDateIntervals={freeDates}
+              inline
             />
           </li>
           <li>

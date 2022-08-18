@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "FishingInstructor")
@@ -22,13 +23,13 @@ public class FishingInstructor extends Attraction {
     public FishingInstructor() {
     }
 
-    public FishingInstructor(Long id, String address, String country, String city, String description, Double rates, Double price,
-                             String type, boolean reserved, LocalDate startDate, LocalDate endDate, String instructorInfo, boolean fishingEquipment, String image, String ownerUsername, int maxGuests) {
-        super(id, address, country, city, description, rates, price, reserved, startDate, endDate, image, ownerUsername, maxGuests, type);
+    public FishingInstructor(Long id, String name, String address, String country, String city, String description, Double rates,
+                             Double price, LocalDate startDate, LocalDate endDate, String image, String ownerUsername,
+                             int maxGuests, String type, List<FreeDays> freeDaysList, String instructorInfo, boolean fishingEquipment) {
+        super(id, name, address, country, city, description, rates, price, startDate, endDate, image, ownerUsername, maxGuests, type, freeDaysList);
         this.instructorInfo = instructorInfo;
         this.fishingEquipment = fishingEquipment;
     }
-
 
     public String getInstructorInfo() {
         return instructorInfo;

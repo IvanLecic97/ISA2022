@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 
 import axios from "axios";
+import moment from "moment";
 
 function ReservationFormShip() {
   console.log(localStorage.getItem("attractionId"));
@@ -21,6 +22,8 @@ function ReservationFormShip() {
   const [pool, setPool] = useState("Yes");
   const [restaurant, setRestaurant] = useState("Yes");
   const [token, setToken] = useState(localStorage.getItem("token"));
+  const [freeDates, setFreeDates] = useState([]);
+  const [reservations, setReservations] = useState([]);
 
   const fetchAttraction = async () => {
     try {
@@ -47,6 +50,36 @@ function ReservationFormShip() {
         setRestaurant("No");
       }
       console.log(attraction.startDate.getTime());
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const loadReservations = async () => {
+    const attractionId = localStorage.getItem("attractionId");
+    const url =
+      "http://localhost:8081/api/reservation/getAllByAttractionId/" +
+      attractionId;
+    try {
+      const data = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data1 = await data.json();
+      //const list = [];
+      let list = [];
+      data1.forEach((value) => {
+        let smth = {
+          start: new Date(value.startDate),
+          end: new Date(value.endDate),
+        };
+        list.push(smth);
+      });
+      console.log(list);
+      console.log(data1);
+      setReservations(data1);
+      setFreeDates(list);
     } catch (error) {
       console.log("error", error);
     }
@@ -120,8 +153,42 @@ function ReservationFormShip() {
       });
   };
 
+  const onChangeRange = (dates) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+    console.log(startDate);
+    console.log(endDate);
+  };
+
+  const dateExcluding = () => {
+    /*const exclude1 = {
+      start: new Date("2022-09-07"),
+      end: new Date("2022-09-12"),
+    };
+    const exclude2 = {
+      start: new Date("2022-09-15"),
+      end: new Date("2022=09-20"),
+    };
+    const list = [];
+    reservations.map((value) => {
+      const exclude = {
+        start: value.startDate,
+        end: value.endDate,
+      };
+      list.push(exclude);
+    });
+    // list.push(exclude1);
+    //list.push(exclude2);
+    console.log(list);
+    setFreeDates(list); */
+    console.log(freeDates);
+  };
+
   useEffect(() => {
     console.log(attractionUrl);
+    loadReservations();
+    dateExcluding();
     fetchAttraction();
 
     console.log(startDate.getTime() + 1);
@@ -150,19 +217,18 @@ function ReservationFormShip() {
             <label>Max guests allowed: {attraction.maxGuests}</label>
           </li>
           <li>
-            <label>Starting day : </label>
+            <label>Free dates</label>
             <DatePicker
-              dateFormat={"yyyy-MM-dd"}
-              selected={startDate}
-              onChange={(date) => onChangeStartDate(date)}
-            />
-          </li>
-          <li>
-            <label>Final day : </label>
-            <DatePicker
-              dateFormat={"yyyy-MM-dd"}
-              selected={endDate}
-              onChange={(date) => onChangeEndDate(date)}
+              selectsRange
+              selected={null}
+              onChange={onChangeRange}
+              startDate={startDate}
+              endDate={endDate}
+              minDate={ogStartDate}
+              maxDate={ogEndDate}
+              isClearable={true}
+              excludeDateIntervals={freeDates}
+              inline
             />
           </li>
           <li>

@@ -21,7 +21,6 @@ public interface IAttractionService  {
     String getType(Attraction attraction);
     List<String> getAllCountries();
     Attraction getById(Long id);
-    List<Attraction> getAllFreeAttractions();
 
     BungalowDTO addBungalow(BungalowDTO bungalowDTO);
 
@@ -36,6 +35,8 @@ public interface IAttractionService  {
     List<FishingInstructor> getUsersInstructors(String username);
 
     List<Attraction> getUsersAttractions(String username);
+
+    List<Attraction> getAllActiveAttractions();
 
 
 }

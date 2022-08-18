@@ -7,6 +7,7 @@ import project.isa.model.users.ShipOwner;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "Ship")
@@ -21,32 +22,17 @@ public class Ship extends Attraction {
     @Column(name = "Restaurant")
     private boolean restaurant;
 
-    /*@OneToOne(mappedBy = "id")
-    private ShipOwner shipOwner;*/
-
-    
-
-
-   // public Ship(Long id, String address, String description, Double rates, Double price, boolean reserved, LocalDateTime startDate, LocalDateTime endDate) {
-    //    super(id, address, description, rates, price, reserved, startDate, endDate);
-  //  }
-
     public Ship() {
     }
 
-    public Ship(Long id, String address, String country, String city, String description, Double rates, Double price, String type, boolean reserved,
-                LocalDate startDate, LocalDate endDate, boolean miniBar, boolean pool, boolean restaurant, String image, String ownerUsername, int maxGuests) {
-        super(id, address, country, city, description, rates, price, reserved, startDate, endDate, image, ownerUsername, maxGuests, type);
+    public Ship(Long id, String name, String address, String country, String city, String description,
+                Double rates, Double price, LocalDate startDate, LocalDate endDate, String image, String ownerUsername, int maxGuests,
+                String type, List<FreeDays> freeDaysList, boolean miniBar, boolean pool, boolean restaurant) {
+        super(id, name, address, country, city, description, rates, price, startDate, endDate, image, ownerUsername, maxGuests, type, freeDaysList);
         this.miniBar = miniBar;
         this.pool = pool;
         this.restaurant = restaurant;
     }
-
-    /*public Ship(boolean miniBar, boolean pool, boolean restaurant) {
-        this.miniBar = miniBar;
-        this.pool = pool;
-        this.restaurant = restaurant;
-    } */
 
     public boolean isMiniBar() {
         return miniBar;

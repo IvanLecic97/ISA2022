@@ -38,9 +38,6 @@ public class Attraction {
     @Column(name = "Price")
     private Double price;
 
-    @Column(name = "Reserved")
-    private boolean reserved;
-
     @Column(name = "StartDate")
     private LocalDate startDate;
 
@@ -60,23 +57,30 @@ public class Attraction {
     private String type;
 
 
-    public Attraction(Long id, String address, String country, String city, String description, Double rates,
-                      Double price, boolean reserved, LocalDate startDate, LocalDate endDate,
-                      String image, String ownerUsername, int maxGuests, String type) {
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "attraction_free_days",
+           joinColumns = @JoinColumn(name = "attraction_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "free_days_id", referencedColumnName = "id"))
+    List<FreeDays> freeDaysList;
+
+
+    public Attraction(Long id, String name, String address, String country, String city, String description, Double rates, Double price, LocalDate startDate, LocalDate endDate,
+                      String image, String ownerUsername, int maxGuests, String type, List<FreeDays> freeDaysList) {
         this.id = id;
+        this.name = name;
         this.address = address;
         this.country = country;
+        this.city = city;
         this.description = description;
         this.rates = rates;
         this.price = price;
-        this.reserved = reserved;
         this.startDate = startDate;
         this.endDate = endDate;
         this.image = image;
         this.ownerUsername = ownerUsername;
         this.maxGuests = maxGuests;
         this.type = type;
-        this.city = city;
+        this.freeDaysList = freeDaysList;
     }
 
     public Attraction() {
@@ -137,14 +141,6 @@ public class Attraction {
         this.price = price;
     }
 
-    public boolean isReserved() {
-        return reserved;
-    }
-
-    public void setReserved(boolean reserved) {
-        this.reserved = reserved;
-    }
-
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -199,5 +195,17 @@ public class Attraction {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public List<FreeDays> getFreeDaysList() {
+        return freeDaysList;
+    }
+
+    public void setFreeDaysList(List<FreeDays> freeDaysList) {
+        this.freeDaysList = freeDaysList;
+    }
+
+    public void addFreeDays(FreeDays freeDays){
+        this.getFreeDaysList().add(freeDays);
     }
 }

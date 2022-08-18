@@ -1,17 +1,16 @@
 package project.isa.controller;
 
-import com.sun.mail.iap.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import project.isa.Roles;
 import project.isa.dto.DiscountedEntityDTO;
 import project.isa.dto.ReservationDTO;
+import project.isa.model.Reservations;
 import project.isa.model.users.RegUser;
 import project.isa.services.ReservationService;
 
@@ -44,5 +43,11 @@ public class ReservationController {
        String retVal = reservationService.reserveDiscountedEntity(discountedEntityDTO, username);
 
        return new ResponseEntity<>(retVal, HttpStatus.OK);
+    }
+
+    @RolesAllowed({Roles.ROLE_CLIENT, Roles.ROLE_BUNGALOW_OWNER, Roles.ROLE_SHIP_OWNER, Roles.ROLE_FISHING_INSTRUCTOR})
+    @GetMapping(value = "/getAllByAttractionId/{id}")
+    public ResponseEntity<?> getAllByAttractionId(@PathVariable Long id){
+        return new ResponseEntity<>(reservationService.getAllByAttractionId(id), HttpStatus.OK);
     }
 }

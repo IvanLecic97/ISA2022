@@ -99,20 +99,20 @@ public class AttractionController {
 
     @GetMapping(value = "/getAttractions")
     @RolesAllowed("ROLE_CLIENT")
-    public ResponseEntity<List<AttractionDTO>> getAllFreeAttractions(){
-        List<Attraction> list1 = attractionService.getAllFreeAttractions();
+    public ResponseEntity<?> getAllFreeAttractions(){
+        /*List<Attraction> list1 = attractionService.getAllEntities();
         List<AttractionDTO> list2 = new ArrayList<AttractionDTO>();
         for(Attraction a : list1){
             AttractionDTO atr = new AttractionDTO();
             atr.setAttraction(a);
             atr.setType(attractionService.getType(a));
             list2.add(atr);
-        }
+        } */
 
       //  HttpHeaders response =  new HttpHeaders();
 
 
-        return new ResponseEntity<List<AttractionDTO>>(list2, HttpStatus.OK);
+        return new ResponseEntity<>(attractionService.getAllEntities(), HttpStatus.OK);
     }
 
     @RolesAllowed(Roles.ROLE_CLIENT)

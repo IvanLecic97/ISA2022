@@ -19,6 +19,7 @@ import project.isa.model.users.ShipOwner;
 import project.isa.repository.*;
 import project.isa.services.IServices.IAttractionService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,10 +94,7 @@ public class AttractionService implements IAttractionService {
         return attractionRepository.findAll();
     }
 
-    @Override
-    public List<Attraction> getAllFreeAttractions() {
-        return attractionRepository.findAllByReservedEquals(false);
-    }
+
 
     @Override
     public String getType(Attraction attraction) {
@@ -126,6 +124,11 @@ public class AttractionService implements IAttractionService {
 
         return retList;
 
+    }
+
+    @Override
+    public List<Attraction> getAllActiveAttractions() {
+        return attractionRepository.findByEndDateBefore(LocalDate.now());
     }
 
     @Override

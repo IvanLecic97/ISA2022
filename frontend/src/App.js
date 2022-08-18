@@ -29,6 +29,7 @@ import GetOwnAttractions from "./main/owners/getOwnAttractions";
 import SetDiscount from "./main/owners/setDiscount";
 import RegistrationRequests from "./main/admin/registrationRequests";
 import RegistrationEntity from "./main/admin/registrationEntity";
+import Testing from "./main/testing";
 
 const App = () => {
   const [value, setValue] = useState(true);
@@ -99,6 +100,7 @@ const App = () => {
           element={<RegistrationRequests />}
         />
         <Route path="/registrationEntity" element={<RegistrationEntity />} />
+        <Route path="/testing" element={<Testing />} />
       </Routes>
     </React.Fragment>
   );

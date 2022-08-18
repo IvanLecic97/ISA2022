@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "Bungalow")
@@ -26,23 +27,16 @@ public class Bungalow extends Attraction {
     public boolean kitchenAppliances;
 
 
-    public Bungalow(Long id, String address, String country, String city, String description, Double rates, Double price, boolean reserved, LocalDate startDate,
-                    LocalDate endDate, boolean tv, boolean airConditioner, boolean wifi, boolean fridge, boolean kitchenAppliances, String image, String ownerUsername, int maxGuests, String type) {
-        super(id, address, country, city, description, rates, price, reserved, startDate, endDate, image, ownerUsername, maxGuests, type);
+    public Bungalow(Long id, String name, String address, String country, String city, String description, Double rates,
+                    Double price, LocalDate startDate, LocalDate endDate, String image, String ownerUsername, int maxGuests, String type,
+                    List<FreeDays> freeDaysList, boolean tv, boolean airConditioner, boolean wifi, boolean fridge, boolean kitchenAppliances) {
+        super(id, name, address, country, city, description, rates, price, startDate, endDate, image, ownerUsername, maxGuests, type, freeDaysList);
         this.tv = tv;
         this.airConditioner = airConditioner;
         this.wifi = wifi;
         this.fridge = fridge;
         this.kitchenAppliances = kitchenAppliances;
     }
-
-    /*public Bungalow(boolean tv, boolean airConditioner, boolean wifi, boolean fridge, boolean kitchenAppliances) {
-        this.tv = tv;
-        this.airConditioner = airConditioner;
-        this.wifi = wifi;
-        this.fridge = fridge;
-        this.kitchenAppliances = kitchenAppliances;
-    } */
 
     public Bungalow() {
     }
