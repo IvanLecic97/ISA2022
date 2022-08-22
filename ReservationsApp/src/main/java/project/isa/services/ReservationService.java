@@ -5,19 +5,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.isa.dto.DiscountedEntityDTO;
 import project.isa.dto.ReservationDTO;
+import project.isa.dto.ReservationHistoryDTO;
 import project.isa.model.Reservations;
-import project.isa.model.entities.Attraction;
-import project.isa.model.entities.FreeDays;
+import project.isa.model.entities.*;
 import project.isa.model.users.RegUser;
-import project.isa.repository.AttractionRepository;
-import project.isa.repository.FreeDaysRepository;
-import project.isa.repository.RegUserRepository;
-import project.isa.repository.ReservationsRepository;
+import project.isa.repository.*;
 import project.isa.services.IServices.IReservationService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -46,6 +45,19 @@ public class ReservationService implements IReservationService {
 
     private FreeDaysRepository freeDaysRepository;
 
+
+    private BungalowRepository bungalowRepository;
+
+
+    private ShipRepository shipRepository;
+
+
+    private FishingInstructorRepository fishingInstructorRepository;
+
+
+
+
+
     @Override
     public void saveReservation(Reservations reservations) {
         reservationsRepository.save(reservations);
@@ -67,6 +79,7 @@ public class ReservationService implements IReservationService {
        LocalDate date2 = LocalDate.parse(reservationDTO.getEndDate(), formatter);
        reservations.setEndDate(date2.minusDays(1));
        reservations.setClientId(clientId);
+       reservations.setAttractionType(reservedAttraction.getType());
 
        Attraction a = attractionService.getById(reservationDTO.getAttractionId());
        attractionRepository.save(a);
@@ -86,11 +99,12 @@ public class ReservationService implements IReservationService {
         Attraction attraction = attractionService.getById(discountedEntityDTO.getAttractionId());
 
         Reservations reservations = new Reservations();
-        reservations.setAttractionId(discountedEntityDTO.getAttractionId());;
+        reservations.setAttractionId(discountedEntityDTO.getAttractionId());
         reservations.setClientId(regUserRepository.findByUsernameEquals(username).getId());
         reservations.setStartDate(attraction.getStartDate());
         reservations.setEndDate(attraction.getEndDate());
         reservations.setOwnerId(regUserRepository.findByUsernameEquals(attraction.getOwnerUsername()).getId());
+        reservations.setReviewed(false);
         reservationsRepository.save(reservations);
 
         attractionRepository.save(attraction);
@@ -109,40 +123,79 @@ public class ReservationService implements IReservationService {
         return reservationsRepository.findByAttractionId(attractionId);
     }
 
+
+
+
     @Override
-    public void setFreeDaysAfterReservation(LocalDate startDate, LocalDate endDate, Attraction attraction) {
-        FreeDays startToStartDate = new FreeDays();
-        FreeDays endToEndDate = new FreeDays();
+    public List<ReservationHistoryDTO> getClientsReservedBungalows(String clientUsername) {
+        List<Reservations> reservations = reservationsRepository.findByClientId(regUserRepository.findByUsername(clientUsername).getId())
+                .stream().filter(value -> value.getAttractionType().equals("Bungalow")).collect(Collectors.toList());
+        List<ReservationHistoryDTO> reservationHistoryDTOList = new ArrayList<>();
+        reservations.forEach(value -> {
+            Attraction a = attractionRepository.getById(value.getAttractionId());
+            ReservationHistoryDTO r = new ReservationHistoryDTO();
+            r.setId(value.getId());
+            r.setName(a.getName());
+            r.setCity(a.getCity());
+            r.setCountry(a.getCountry());
+            r.setStartDate(value.getStartDate().toString());
+            r.setEndDate(value.getEndDate().toString());
+            r.setPrice(a.getPrice());
+            r.setAttractionId(a.getId());
+            r.setOwnerUsername(a.getOwnerUsername());
+            r.setReviewed(value.isReviewed());
+            reservationHistoryDTOList.add(r);
+        });
 
-        if(attraction.getFreeDaysList() == null) {
-            if (startDate.compareTo(attraction.getStartDate()) == 0) {
-                endToEndDate.setStartDate(endDate.plusDays(1));
-                endToEndDate.setEndDate(attraction.getEndDate());
-                attraction.addFreeDays(endToEndDate);
-                freeDaysRepository.save(endToEndDate);
-                attractionRepository.save(attraction);
-            } else if (endDate.compareTo(attraction.getEndDate()) == 0) {
-                startToStartDate.setStartDate(attraction.getStartDate());
-                startToStartDate.setEndDate(startDate.minusDays(1));
-                attraction.addFreeDays(startToStartDate);
-                freeDaysRepository.save(startToStartDate);
-                attractionRepository.save(attraction);
-            } else {
-                startToStartDate.setStartDate(attraction.getStartDate());
-                startToStartDate.setEndDate(startDate.minusDays(1));
-                attraction.addFreeDays(startToStartDate);
-                endToEndDate.setStartDate(endDate.plusDays(1));
-                endToEndDate.setEndDate(endDate);
-                attraction.addFreeDays(endToEndDate);
-                freeDaysRepository.save(startToStartDate);
-                freeDaysRepository.save(endToEndDate);
-                attractionRepository.save(attraction);
-            }
+        return  reservationHistoryDTOList;
+    }
 
+    @Override
+    public List<ReservationHistoryDTO> getClientsReservedShips(String clientUsername) {
+            List<Reservations> reservations = reservationsRepository.findByClientId(regUserRepository.findByUsername(clientUsername).getId())
+                    .stream().filter(value -> value.getAttractionType().equals("Ship")).collect(Collectors.toList());
+            List<ReservationHistoryDTO> reservationHistoryDTOList = new ArrayList<>();
+            reservations.forEach(value -> {
+                Attraction a = attractionRepository.getById(value.getAttractionId());
+                ReservationHistoryDTO r = new ReservationHistoryDTO();
+                r.setId(value.getId());
+                r.setName(a.getName());
+                r.setCity(a.getCity());
+                r.setCountry(a.getCountry());
+                r.setStartDate(value.getStartDate().toString());
+                r.setEndDate(value.getEndDate().toString());
+                r.setPrice(a.getPrice());
+                r.setAttractionId(a.getId());
+                r.setOwnerUsername(a.getOwnerUsername());
+                r.setReviewed(value.isReviewed());
+                reservationHistoryDTOList.add(r);
+            });
 
-        }
+            return  reservationHistoryDTOList;
+    }
 
+    @Override
+    public List<ReservationHistoryDTO> getClientsReservedInstructors(String clientUsername) {
+        List<Reservations> reservations = reservationsRepository.findByClientId(regUserRepository.findByUsername(clientUsername).getId())
+                .stream().filter(value -> value.getAttractionType().equals("Fishing instructor"))
+                        .collect(Collectors.toList());
+        List<ReservationHistoryDTO> reservationHistoryDTOList = new ArrayList<>();
+        reservations.forEach(value -> {
+            Attraction a = attractionRepository.getById(value.getAttractionId());
+            ReservationHistoryDTO r = new ReservationHistoryDTO();
+            r.setId(value.getId());
+            r.setName(a.getName());
+            r.setCity(a.getCity());
+            r.setCountry(a.getCountry());
+            r.setStartDate(value.getStartDate().toString());
+            r.setEndDate(value.getEndDate().toString());
+            r.setPrice(a.getPrice());
+            r.setAttractionId(a.getId());
+            r.setOwnerUsername(a.getOwnerUsername());
+            r.setReviewed(value.isReviewed());
+            reservationHistoryDTOList.add(r);
+        });
 
-
+        return  reservationHistoryDTOList;
     }
 }

@@ -18,6 +18,10 @@ public interface AttractionRepository extends JpaRepository<Attraction, Long> {
 
     List<Attraction> findByEndDateBefore(LocalDate endDate);
 
+    Attraction getByOwnerUsername(String ownerUsername);
+
+
+
 
 
 

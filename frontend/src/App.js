@@ -30,6 +30,10 @@ import SetDiscount from "./main/owners/setDiscount";
 import RegistrationRequests from "./main/admin/registrationRequests";
 import RegistrationEntity from "./main/admin/registrationEntity";
 import Testing from "./main/testing";
+import ShipsReservationHistory from "./main/client/shipsReservationHistory";
+import AddReview from "./main/client/addReview";
+import BungalowReservationHistory from "./main/client/bungalowReservationHistory";
+import InstructorReservationHistory from "./main/client/instructorReservationHistory";
 
 const App = () => {
   const [value, setValue] = useState(true);
@@ -101,6 +105,19 @@ const App = () => {
         />
         <Route path="/registrationEntity" element={<RegistrationEntity />} />
         <Route path="/testing" element={<Testing />} />
+        <Route
+          path="/shipsReservationHistory"
+          element={<ShipsReservationHistory />}
+        />
+        <Route path="/addReview" element={<AddReview />} />
+        <Route
+          path="/bungalowReservationHistory"
+          element={<BungalowReservationHistory />}
+        />
+        <Route
+          path="/instructorReservationHistory"
+          element={<InstructorReservationHistory />}
+        />
       </Routes>
     </React.Fragment>
   );

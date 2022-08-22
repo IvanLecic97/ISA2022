@@ -50,4 +50,32 @@ public class ReservationController {
     public ResponseEntity<?> getAllByAttractionId(@PathVariable Long id){
         return new ResponseEntity<>(reservationService.getAllByAttractionId(id), HttpStatus.OK);
     }
+
+    @RolesAllowed(Roles.ROLE_CLIENT)
+    @GetMapping(value = "/getClientsReservedBungalows")
+    public ResponseEntity<?> getClientsReservedBungalows(){
+        RegUser loggedUser = (RegUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = loggedUser.getUsername();
+
+        return new ResponseEntity<>(reservationService.getClientsReservedBungalows(username), HttpStatus.OK);
+    }
+
+    @RolesAllowed(Roles.ROLE_CLIENT)
+    @GetMapping(value = "/getClientsReservedShips")
+    public ResponseEntity<?> getClientsReservedShips(){
+        RegUser loggedUser = (RegUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = loggedUser.getUsername();
+
+        return new ResponseEntity<>(reservationService.getClientsReservedShips(username), HttpStatus.OK);
+    }
+
+    @RolesAllowed(Roles.ROLE_CLIENT)
+    @GetMapping(value = "/getClientsReservedInstructors")
+    public ResponseEntity<?> getClientsReservedInstructors(){
+        RegUser loggedUser = (RegUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = loggedUser.getUsername();
+
+        return new ResponseEntity<>(reservationService.getClientsReservedInstructors(username), HttpStatus.OK);
+    }
+
 }

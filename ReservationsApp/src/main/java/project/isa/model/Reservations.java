@@ -29,17 +29,25 @@ public class Reservations {
     @Column(name = "End_Date")
     private LocalDate endDate;
 
+    @Column(name = "attraction_type")
+    private String attractionType;
+
+    @Column(name = "is_reviewed")
+    private boolean isReviewed;
+
 
     public Reservations() {
     }
 
-    public Reservations(Long id, Long attractionId, Long ownerId, Long clientId, LocalDate startDate, LocalDate endDate) {
+    public Reservations(Long id, Long attractionId, Long ownerId, Long clientId, LocalDate startDate, LocalDate endDate, String attractionType, boolean isReviewed) {
         this.id = id;
         this.attractionId = attractionId;
         this.ownerId = ownerId;
         this.clientId = clientId;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.attractionType = attractionType;
+        this.isReviewed = isReviewed;
     }
 
     public Long getId() {
@@ -88,5 +96,21 @@ public class Reservations {
 
     public void setClientId(Long clientId) {
         this.clientId = clientId;
+    }
+
+    public String getAttractionType() {
+        return attractionType;
+    }
+
+    public void setAttractionType(String attractionType) {
+        this.attractionType = attractionType;
+    }
+
+    public boolean isReviewed() {
+        return isReviewed;
+    }
+
+    public void setReviewed(boolean reviewed) {
+        isReviewed = reviewed;
     }
 }

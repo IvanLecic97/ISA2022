@@ -10,5 +10,13 @@ import java.util.List;
 public interface ReservationsRepository extends JpaRepository<Reservations, Long> {
     List<Reservations> findByAttractionId(Long attractionId);
 
+    List<Reservations> findByClientId(Long clientId);
+
+
+
+
+
+
+
 
 }

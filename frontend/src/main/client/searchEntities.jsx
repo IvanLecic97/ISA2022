@@ -126,19 +126,19 @@ function SearchEntities() {
     const copiedArray = [...importedList];
 
     copiedArray.forEach((element) => {
-      const d1 = new Date(element.attraction.startDate);
-      const d2 = new Date(element.attraction.endDate);
-      element.attraction.startDate = d1;
-      element.attraction.endDate = d2;
-      console.log(new Date(element.attraction.startDate));
-      console.log(new Date(element.attraction.endDate));
+      const d1 = new Date(element.startDate);
+      const d2 = new Date(element.endDate);
+      element.startDate = d1;
+      element.endDate = d2;
+      console.log(new Date(element.startDate));
+      console.log(new Date(element.endDate));
     });
 
     let firstIteration = [];
 
     let startDateFilter = [];
     startDateFilter = copiedArray.filter(
-      (element) => element.attraction.startDate.getTime() > startDate.getTime()
+      (element) => element.startDate.getTime() > startDate.getTime()
     );
     if (startDateChanged !== false && startDateFilter.length !== 0) {
       firstIteration = [...startDateFilter];
@@ -149,7 +149,7 @@ function SearchEntities() {
     let endDateFilter = [];
     let secondIteration = [];
     endDateFilter = firstIteration.filter(
-      (element) => element.attraction.endDate.getTime() < endDate.getTime()
+      (element) => element.endDate.getTime() < endDate.getTime()
     );
     if (endDateChanged !== false && endDateFilter.length !== 0) {
       secondIteration = [...endDateFilter];
@@ -162,7 +162,7 @@ function SearchEntities() {
 
     if (country !== "") {
       countryFilter = secondIteration.filter(
-        (element) => element.attraction.country === country
+        (element) => element.country === country
       );
       thirdIteration = [...countryFilter];
     } else {
@@ -184,7 +184,7 @@ function SearchEntities() {
     let fifthIteration = [];
     if (rating !== 0) {
       ratingFilter = fourthIteration.filter(
-        (element) => element.attraction.rates > rating
+        (element) => element.rates > rating
       );
       fifthIteration = [...ratingFilter];
     } else {
@@ -283,7 +283,6 @@ function SearchEntities() {
           state.state.map((value) => (
             <li key={value.id}>
               <Entity entity={value} />)
-              <DatePicker />
             </li>
           ))}
       </div>

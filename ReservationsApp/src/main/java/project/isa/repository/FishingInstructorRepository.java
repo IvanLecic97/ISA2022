@@ -6,7 +6,7 @@ import project.isa.model.entities.FishingInstructor;
 import java.util.List;
 
 public interface FishingInstructorRepository extends JpaRepository<FishingInstructor, Long> {
-    public FishingInstructor findByIdEquals(FishingInstructor fishingInstructor);
+
 
     List<FishingInstructor> findByOwnerUsername(String ownerUsername);
 

@@ -95,6 +95,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/getRegistrationRequests").hasAuthority(Roles.ROLE_ADMIN)
                 .antMatchers("/api/user/getUserByUsername/**").hasAuthority(Roles.ROLE_ADMIN)
                 .antMatchers("/api/reservation/getAllByAttractionId/**").hasAuthority(Roles.ROLE_CLIENT)
+                .antMatchers("/api/review").hasAuthority(Roles.ROLE_CLIENT)
+                .antMatchers("/api/review/getUnseenByAdmin").hasAuthority(Roles.ROLE_ADMIN)
+                .antMatchers("/api/review/setApproved").hasAuthority(Roles.ROLE_ADMIN)
 
                 .anyRequest().authenticated().and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService, regUserRepository, authoritiesRepository), BasicAuthenticationFilter.class);

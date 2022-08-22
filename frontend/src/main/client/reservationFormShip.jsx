@@ -161,34 +161,9 @@ function ReservationFormShip() {
     console.log(endDate);
   };
 
-  const dateExcluding = () => {
-    /*const exclude1 = {
-      start: new Date("2022-09-07"),
-      end: new Date("2022-09-12"),
-    };
-    const exclude2 = {
-      start: new Date("2022-09-15"),
-      end: new Date("2022=09-20"),
-    };
-    const list = [];
-    reservations.map((value) => {
-      const exclude = {
-        start: value.startDate,
-        end: value.endDate,
-      };
-      list.push(exclude);
-    });
-    // list.push(exclude1);
-    //list.push(exclude2);
-    console.log(list);
-    setFreeDates(list); */
-    console.log(freeDates);
-  };
-
   useEffect(() => {
     console.log(attractionUrl);
     loadReservations();
-    dateExcluding();
     fetchAttraction();
 
     console.log(startDate.getTime() + 1);
