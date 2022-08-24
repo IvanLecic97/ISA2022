@@ -28,4 +28,6 @@ public interface IReservationService {
 
     List<ReservationHistoryDTO> getClientsReservedInstructors(String clientUsername);
 
+    void deleteAllUsersReservations(Long clientId);
+
 }

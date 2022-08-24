@@ -1,9 +1,7 @@
 package project.isa.services.IServices;
 
-import project.isa.dto.BungalowOwnerDTO;
-import project.isa.dto.FishingInstructorOwnerDTO;
-import project.isa.dto.RegDisapprovedDTO;
-import project.isa.dto.ShipOwnerDTO;
+import project.isa.dto.*;
+import project.isa.model.DeleteRequest;
 import project.isa.model.entities.Bungalow;
 import project.isa.model.users.BungalowOwner;
 import project.isa.model.users.Client;
@@ -28,4 +26,16 @@ public interface IRegUserService {
     void approveOwnerRegistration(String username);
 
     void disApproveOwnerRegistration(RegDisapprovedDTO regDisapprovedDTO);
+
+    void deleteClientById(Long clientId);
+
+    void deleteUser(Long id);
+
+    DeleteRequestDTO makeDeleteRequest(DeleteRequestDTO deleteRequestDTO);
+
+    List<DeleteRequestDTO> getAllUnseenByAdmin();
+
+    void deleteDeleteRequest(Long id);
+
+
 }

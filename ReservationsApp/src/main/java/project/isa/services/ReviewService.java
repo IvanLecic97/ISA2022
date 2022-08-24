@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import project.isa.dto.ReviewDTO;
 import project.isa.mappers.ReviewMapper;
+import project.isa.model.Complaint;
 import project.isa.model.Reservations;
 import project.isa.model.Review;
 import project.isa.model.entities.Attraction;
@@ -15,6 +16,7 @@ import project.isa.repository.ReservationsRepository;
 import project.isa.repository.ReviewRepository;
 import project.isa.services.IServices.IReviewService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -81,5 +83,21 @@ public class ReviewService implements IReviewService {
         reviewRepository.save(review);
 
         return ReviewMapper.INSTANCE.reviewToDto(review);
+    }
+
+
+    @Override
+    public void deleteUsersReviews(String username) {
+        List<Long> ids = new ArrayList<>();
+        List<Review> reviews = reviewRepository.findByClientUsername(username);
+        if(reviews != null) {
+            reviews.forEach(value -> {
+                ids.add(value.getId());
+            });
+
+            ids.forEach(value -> {
+                reviewRepository.deleteById(value);
+            });
+        }
     }
 }

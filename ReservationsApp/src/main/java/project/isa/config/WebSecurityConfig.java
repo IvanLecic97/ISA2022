@@ -98,6 +98,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/review").hasAuthority(Roles.ROLE_CLIENT)
                 .antMatchers("/api/review/getUnseenByAdmin").hasAuthority(Roles.ROLE_ADMIN)
                 .antMatchers("/api/review/setApproved").hasAuthority(Roles.ROLE_ADMIN)
+                .antMatchers("/api/complaint").hasAuthority(Roles.ROLE_CLIENT)
+                .antMatchers("/api/user/deleteUser").hasAuthority(Roles.ROLE_ADMIN)
+                .antMatchers("/api/user/makeDeleteRequest").hasAuthority(Roles.ROLE_CLIENT)
+                .antMatchers("/api/user/getDeleteRequests").hasAuthority(Roles.ROLE_ADMIN)
 
                 .anyRequest().authenticated().and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService, regUserRepository, authoritiesRepository), BasicAuthenticationFilter.class);

@@ -34,6 +34,9 @@ import ShipsReservationHistory from "./main/client/shipsReservationHistory";
 import AddReview from "./main/client/addReview";
 import BungalowReservationHistory from "./main/client/bungalowReservationHistory";
 import InstructorReservationHistory from "./main/client/instructorReservationHistory";
+import Complaint from "./main/client/complaint";
+import DeleteAccount from "./main/client/deleteAccount";
+import DeleteRequests from "./main/admin/deleteRequests";
 
 const App = () => {
   const [value, setValue] = useState(true);
@@ -118,6 +121,9 @@ const App = () => {
           path="/instructorReservationHistory"
           element={<InstructorReservationHistory />}
         />
+        <Route path="/complaint" element={<Complaint />} />
+        <Route path="/deleteAccount" element={<DeleteAccount />} />
+        <Route path="/deleteRequests" element={<DeleteRequests />} />
       </Routes>
     </React.Fragment>
   );

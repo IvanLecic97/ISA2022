@@ -35,11 +35,15 @@ public class Reservations {
     @Column(name = "is_reviewed")
     private boolean isReviewed;
 
+    @Column(name = "is_complained")
+    private Boolean isComplained;
+
 
     public Reservations() {
     }
 
-    public Reservations(Long id, Long attractionId, Long ownerId, Long clientId, LocalDate startDate, LocalDate endDate, String attractionType, boolean isReviewed) {
+    public Reservations(Long id, Long attractionId, Long ownerId, Long clientId, LocalDate startDate,
+                        LocalDate endDate, String attractionType, boolean isReviewed, Boolean isComplained) {
         this.id = id;
         this.attractionId = attractionId;
         this.ownerId = ownerId;
@@ -48,6 +52,7 @@ public class Reservations {
         this.endDate = endDate;
         this.attractionType = attractionType;
         this.isReviewed = isReviewed;
+        this.isComplained = isComplained;
     }
 
     public Long getId() {
@@ -112,5 +117,13 @@ public class Reservations {
 
     public void setReviewed(boolean reviewed) {
         isReviewed = reviewed;
+    }
+
+    public Boolean getComplained() {
+        return isComplained;
+    }
+
+    public void setComplained(Boolean complained) {
+        isComplained = complained;
     }
 }

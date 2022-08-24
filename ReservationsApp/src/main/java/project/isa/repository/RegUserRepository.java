@@ -12,4 +12,6 @@ public interface RegUserRepository extends JpaRepository<RegUser, Long> {
     public RegUser findByUsername(String username);
 
 
+
+
 }

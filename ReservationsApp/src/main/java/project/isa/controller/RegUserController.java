@@ -7,16 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import project.isa.Roles;
-import project.isa.dto.BungalowOwnerDTO;
-import project.isa.dto.FishingInstructorOwnerDTO;
-import project.isa.dto.RegDisapprovedDTO;
-import project.isa.dto.ShipOwnerDTO;
+import project.isa.dto.*;
 import project.isa.model.users.*;
 import project.isa.repository.RegUserRepository;
+import project.isa.services.EmailSenderService;
 import project.isa.services.RegUserService;
 import project.isa.services.RegistrationRequestsService;
 
 import javax.annotation.security.RolesAllowed;
+import javax.management.relation.Role;
 import java.util.List;
 
 @Controller
@@ -28,6 +27,9 @@ public class RegUserController {
 
     @Autowired
     private RegistrationRequestsService registrationRequestsService;
+
+    @Autowired
+    private EmailSenderService emailSenderService;
 
 
 
@@ -147,6 +149,36 @@ public class RegUserController {
     }
 
 
+    @RolesAllowed(Roles.ROLE_ADMIN)
+    @PostMapping(value = "/deleteUser")
+    public ResponseEntity<?> deleteUser(@RequestBody DeleteApprovalDTO deleteApprovalDTO){
+        RegUser user = regUserService.getUser(deleteApprovalDTO.getUsername());
+
+        if(deleteApprovalDTO.getAllowed()){
+            regUserService.deleteUser(user.getId());
+            regUserService.deleteDeleteRequest(deleteApprovalDTO.getDeleteRequestId());
+            emailSenderService.sendSimpleEmail(deleteApprovalDTO.getUsername(), deleteApprovalDTO.getReason(), "Account deletion");
+
+            return new ResponseEntity<>("User deleted", HttpStatus.OK);
+        } else {
+            emailSenderService.sendSimpleEmail(deleteApprovalDTO.getUsername(), deleteApprovalDTO.getReason(), "Account deletion");
+            regUserService.deleteDeleteRequest(deleteApprovalDTO.getDeleteRequestId());
+            return new ResponseEntity<>("User not deleted", HttpStatus.OK);
+        }
+    }
+
+
+    @RolesAllowed(Roles.ROLE_CLIENT)
+    @PostMapping(value = "/makeDeleteRequest")
+    public  ResponseEntity<?> makeDeleteRequest(@RequestBody DeleteRequestDTO deleteRequestDTO){
+        return new ResponseEntity<>(regUserService.makeDeleteRequest(deleteRequestDTO), HttpStatus.OK);
+    }
+
+    @RolesAllowed(Roles.ROLE_ADMIN)
+    @GetMapping(value = "/getDeleteRequests")
+    public ResponseEntity<?> getDeleteRequests(){
+        return new ResponseEntity<>(regUserService.getAllUnseenByAdmin(), HttpStatus.OK);
+    }
 
 
 }

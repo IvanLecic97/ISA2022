@@ -30,6 +30,14 @@ function BungalowReservationHistory() {
     window.open("/addReview");
   }
 
+  function addComplaint(event, attractionId, username, resId) {
+    event.preventDefault();
+    localStorage.setItem("attractionId", attractionId);
+    localStorage.setItem("owner_username", username);
+    localStorage.setItem("reservation_id", resId);
+    window.open("/complaint");
+  }
+
   useEffect(() => {
     loadData();
   }, []);
@@ -76,7 +84,18 @@ function BungalowReservationHistory() {
                   </button>
                 </th>
                 <th>
-                  <button>Complaint</button>
+                  <button
+                    onClick={(event) =>
+                      addComplaint(
+                        event,
+                        value.attractionId,
+                        value.ownerUsername,
+                        value.id
+                      )
+                    }
+                  >
+                    Complaint
+                  </button>
                 </th>
               </tr>
             ))}

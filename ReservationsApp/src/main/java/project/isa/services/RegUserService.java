@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,13 +13,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.isa.Roles;
-import project.isa.dto.BungalowOwnerDTO;
-import project.isa.dto.FishingInstructorOwnerDTO;
-import project.isa.dto.RegDisapprovedDTO;
-import project.isa.dto.ShipOwnerDTO;
+import project.isa.dto.*;
 import project.isa.mappers.BungalowOwnerMapper;
+import project.isa.mappers.DeleteRequestMapper;
 import project.isa.mappers.FishingInstructorOwnerMapper;
 import project.isa.mappers.ShipOwnerMapper;
+import project.isa.model.DeleteRequest;
 import project.isa.model.entities.Bungalow;
 import project.isa.model.users.*;
 import project.isa.repository.*;
@@ -68,6 +68,18 @@ public class RegUserService implements IRegUserService, UserDetailsService {
 
     @Autowired
     private RegistrationRequestRepository registrationRequestRepository;
+
+    @Autowired
+    private ComplaintService complaintService;
+
+    @Autowired
+    private ReviewService reviewService;
+
+    @Autowired
+    private ReservationService reservationService;
+
+    @Autowired
+    private DeleteRequestRepository deleteRequestRepository;
 
 
 
@@ -278,5 +290,45 @@ public class RegUserService implements IRegUserService, UserDetailsService {
                         " Reason: " + regDisapprovedDTO.getMessage(),
                 "Registration rejected");
 
+    }
+
+
+    @Override
+    public void deleteClientById(Long clientId) {
+        clientRepository.deleteById(clientId);
+    }
+
+
+    @Override
+    public void deleteUser(Long id) {
+        RegUser user = regUserRepository.getById(id);
+        complaintService.deleteUsersComplaints(user.getUsername());
+        reviewService.deleteUsersReviews(user.getUsername());
+        reservationService.deleteAllUsersReservations(user.getId());
+        clientRepository.deleteById(id);
+    }
+
+    @Override
+    public DeleteRequestDTO makeDeleteRequest(DeleteRequestDTO deleteRequestDTO) {
+        DeleteRequest deleteRequest = new DeleteRequest();
+        RegUser currentUser = (RegUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        deleteRequest.setUserUsername(currentUser.getUsername());
+        deleteRequest.setReason(deleteRequestDTO.getReason());
+        deleteRequest.setSeenByAdmin(false);
+        deleteRequestRepository.save(deleteRequest);
+
+
+        return DeleteRequestMapper.INSTANCE.requestToDto(deleteRequest);
+    }
+
+    @Override
+    public List<DeleteRequestDTO> getAllUnseenByAdmin() {
+        List<DeleteRequest> list = deleteRequestRepository.findBySeenByAdminFalse();
+        return DeleteRequestMapper.INSTANCE.requestsToDtos(list);
+    }
+
+    @Override
+    public void deleteDeleteRequest(Long id) {
+        deleteRequestRepository.deleteById(id);
     }
 }

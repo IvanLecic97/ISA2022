@@ -7,6 +7,7 @@ import project.isa.dto.DiscountedEntityDTO;
 import project.isa.dto.ReservationDTO;
 import project.isa.dto.ReservationHistoryDTO;
 import project.isa.model.Reservations;
+import project.isa.model.Review;
 import project.isa.model.entities.*;
 import project.isa.model.users.RegUser;
 import project.isa.repository.*;
@@ -80,6 +81,7 @@ public class ReservationService implements IReservationService {
        reservations.setEndDate(date2.minusDays(1));
        reservations.setClientId(clientId);
        reservations.setAttractionType(reservedAttraction.getType());
+       reservations.setComplained(false);
 
        Attraction a = attractionService.getById(reservationDTO.getAttractionId());
        attractionRepository.save(a);
@@ -197,5 +199,21 @@ public class ReservationService implements IReservationService {
         });
 
         return  reservationHistoryDTOList;
+    }
+
+
+    @Override
+    public void deleteAllUsersReservations(Long clientId) {
+        List<Long> ids = new ArrayList<>();
+        List<Reservations> reservations = reservationsRepository.findByClientId(clientId);
+        if(reservations != null) {
+            reservations.forEach(value -> {
+                ids.add(value.getId());
+            });
+
+            ids.forEach(value -> {
+                reservationsRepository.deleteById(value);
+            });
+        }
     }
 }

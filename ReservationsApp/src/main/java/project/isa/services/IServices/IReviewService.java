@@ -3,6 +3,8 @@ package project.isa.services.IServices;
 
 
 import java.util.List;
+
+
 import project.isa.dto.ReviewDTO;
 import project.isa.model.Review;
 
@@ -12,6 +14,8 @@ public interface IReviewService {
     List<ReviewDTO> getUnseenByAdmin();
 
     ReviewDTO manageReview(ReviewDTO reviewDTO);
+
+    void deleteUsersReviews(String username);
 
 
 }

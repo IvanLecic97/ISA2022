@@ -63,6 +63,14 @@
   border-color: black;
 }
 
+.deleteAccForm {
+  background-color: aquamarine;
+  height: auto;
+  width: auto;
+  border: 20px;
+  border-color: black;
+}
+
 .formGroup {
   background-color: red;
   width: 120px;

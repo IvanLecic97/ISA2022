@@ -15,6 +15,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     List<Review> findBySeenByAdminFalse();
 
+    List<Review> findByClientUsername(String clientUsername);
+
+
+
 
 
 
