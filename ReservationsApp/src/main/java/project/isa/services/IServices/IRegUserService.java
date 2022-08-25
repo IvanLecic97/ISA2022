@@ -3,6 +3,7 @@ package project.isa.services.IServices;
 import project.isa.dto.*;
 import project.isa.model.DeleteRequest;
 import project.isa.model.entities.Bungalow;
+import project.isa.model.users.Admin;
 import project.isa.model.users.BungalowOwner;
 import project.isa.model.users.Client;
 import project.isa.model.users.RegUser;
@@ -36,6 +37,14 @@ public interface IRegUserService {
     List<DeleteRequestDTO> getAllUnseenByAdmin();
 
     void deleteDeleteRequest(Long id);
+
+    Admin registerAdmin(RegUserDTO regUserDTO);
+
+    String getRole(String username);
+
+    String changeAdminsPassword(String username, String password);
+
+    boolean getActivated(String username);
 
 
 }

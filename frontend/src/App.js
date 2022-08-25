@@ -37,6 +37,7 @@ import InstructorReservationHistory from "./main/client/instructorReservationHis
 import Complaint from "./main/client/complaint";
 import DeleteAccount from "./main/client/deleteAccount";
 import DeleteRequests from "./main/admin/deleteRequests";
+import AddNewAdmin from "./main/admin/addNewAdmin";
 
 const App = () => {
   const [value, setValue] = useState(true);
@@ -124,6 +125,7 @@ const App = () => {
         <Route path="/complaint" element={<Complaint />} />
         <Route path="/deleteAccount" element={<DeleteAccount />} />
         <Route path="/deleteRequests" element={<DeleteRequests />} />
+        <Route path="/addNewAdmin" element={<AddNewAdmin />} />
       </Routes>
     </React.Fragment>
   );

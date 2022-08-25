@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import project.isa.Roles;
 import project.isa.dto.RegUserDTO;
 import project.isa.model.users.RegUser;
 import project.isa.model.users.UserTokenState;
@@ -44,6 +45,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private RegUserService userService;
 
+    @Autowired
+    private PasswordEncoder bCryptPasswordEncoder;
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -62,7 +66,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     public RegUserDTO login(JwtAuthenticationRequest authenticationRequest)
     {
         Authentication authentication;
-        if(userService.checkIfEnabled(authenticationRequest.getUsername()) == true) {
+        RegUser user1 = userRepository.findByUsername(authenticationRequest.getUsername());
+        if(!user1.getActivated() && user1.getRole().equals(Roles.ROLE_ADMIN)){
+            user1.setPassword(bCryptPasswordEncoder.encode(authenticationRequest.getPassword()));
+            user1.setActivated(true);
+            userRepository.save(user1);
+        }
+
+        if(userService.checkIfEnabled(authenticationRequest.getUsername())) {
             try {
                 authentication = authenticationManager
                         .authenticate(new UsernamePasswordAuthenticationToken(

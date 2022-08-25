@@ -81,6 +81,9 @@ public class RegUserService implements IRegUserService, UserDetailsService {
     @Autowired
     private DeleteRequestRepository deleteRequestRepository;
 
+    @Autowired
+    private AdminRepository adminRepository;
+
 
 
 
@@ -222,6 +225,29 @@ public class RegUserService implements IRegUserService, UserDetailsService {
     }
 
     @Override
+    public Admin registerAdmin(RegUserDTO regUserDTO) {
+        if(regUserRepository.findByUsernameEquals(regUserDTO.getUsername()) == null)
+        {
+            Admin u = new Admin();
+            u.setAddress(regUserDTO.getAddress());
+            u.setCity(regUserDTO.getCity());
+            u.setCountry(regUserDTO.getCountry());
+            u.setName(regUserDTO.getName());
+            u.setPassword(bCryptPasswordEncoder.encode(regUserDTO.getPassword()));
+            u.setPhone(regUserDTO.getPhone());
+            u.setRole(Roles.ROLE_ADMIN);
+            u.setSurname(regUserDTO.getSurname());
+            u.setUsername(regUserDTO.getUsername());
+            u.setActivated(false);
+
+            adminRepository.save(u);
+            return u;
+        }
+        else
+            return null;
+    }
+
+    @Override
   public  boolean checkIfEnabled(String username)
     {
         boolean retVal = false;
@@ -330,5 +356,25 @@ public class RegUserService implements IRegUserService, UserDetailsService {
     @Override
     public void deleteDeleteRequest(Long id) {
         deleteRequestRepository.deleteById(id);
+    }
+
+
+    @Override
+    public String getRole(String username) {
+
+        return regUserRepository.findByUsername(username).getRole();
+    }
+
+    @Override
+    public boolean getActivated(String username) {
+        return regUserRepository.findByUsername(username).getActivated();
+    }
+
+    @Override
+    public String changeAdminsPassword(String username, String password) {
+        RegUser user = regUserRepository.findByUsername(username);
+        user.setPassword(password);
+        regUserRepository.save(user);
+        return "password changed!";
     }
 }

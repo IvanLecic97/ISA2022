@@ -180,5 +180,27 @@ public class RegUserController {
         return new ResponseEntity<>(regUserService.getAllUnseenByAdmin(), HttpStatus.OK);
     }
 
+    @RolesAllowed(Roles.ROLE_ADMIN)
+    @PostMapping(value = "/addNewAdmin")
+    public ResponseEntity<?> addNewAdmin(@RequestBody RegUserDTO regUserDTO){
+        return new ResponseEntity<>(regUserService.registerAdmin(regUserDTO), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getAdminInfo/{username}")
+    public ResponseEntity<?> getAdminInfo(@PathVariable String username) {
+        RegUser user = new RegUser();
+        user.setRole(regUserService.getRole(username));
+        user.setActivated(regUserService.getActivated(username));
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/changeAdminPassword")
+    public ResponseEntity<?> changeAdminPassword(@RequestBody RegUserDTO regUserDTO){
+        return new ResponseEntity<>(regUserService.changeAdminsPassword(regUserDTO.getUsername(), regUserDTO.getPassword()), HttpStatus.OK);
+    }
+
+
+
 
 }

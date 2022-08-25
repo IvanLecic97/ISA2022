@@ -79,6 +79,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/registerBungalowOwner").permitAll()
                 .antMatchers("/api/user/registerShipOwner").permitAll()
                 .antMatchers("/api/user/registerFishingInstructorOwner").permitAll()
+                .antMatchers("/api/user/getAdminInfo/**").permitAll()
+                .antMatchers("/api/user/changeAdminPassword").permitAll()
                 .antMatchers("/api/attraction/addBungalow").hasAuthority(Roles.ROLE_BUNGALOW_OWNER)
                 .antMatchers("/api/attraction/addShip").hasAuthority(Roles.ROLE_SHIP_OWNER)
                 .antMatchers("/api/attraction/getAttractions").hasAuthority(Roles.ROLE_CLIENT)
@@ -102,6 +104,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/deleteUser").hasAuthority(Roles.ROLE_ADMIN)
                 .antMatchers("/api/user/makeDeleteRequest").hasAuthority(Roles.ROLE_CLIENT)
                 .antMatchers("/api/user/getDeleteRequests").hasAuthority(Roles.ROLE_ADMIN)
+                .antMatchers("/api/user/addNewAdmin").hasAuthority(Roles.ROLE_ADMIN)
 
                 .anyRequest().authenticated().and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService, regUserRepository, authoritiesRepository), BasicAuthenticationFilter.class);
@@ -121,6 +124,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.POST, "/api/user/registerBungalowOwner");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/user/registerShipOwner");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/user/registerFishingInstructorOwner");
+        web.ignoring().antMatchers(HttpMethod.GET, "/api/user/getAdminInfo/**");
+        web.ignoring().antMatchers(HttpMethod.POST, "/changeAdminPassword");
         //web.ignoring().antMatchers(HttpMethod.POST, "api/attraction/addBungalow");
 
         //web.ignoring().antMatchers(HttpMethod.GET, "/**/public/**");
