@@ -335,10 +335,12 @@ public class RegUserService implements IRegUserService, UserDetailsService {
     @Override
     public void deleteUser(Long id) {
         RegUser user = regUserRepository.getById(id);
-        complaintService.deleteUsersComplaints(user.getUsername());
-        reviewService.deleteUsersReviews(user.getUsername());
-        reservationService.deleteAllUsersReservations(user.getId());
-        clientRepository.deleteById(id);
+        if(deleteRequestRepository.findByUserUsername((user.getUsername())) != null){
+            complaintService.deleteUsersComplaints(user.getUsername());
+            reviewService.deleteUsersReviews(user.getUsername());
+            reservationService.deleteAllUsersReservations(user.getId());
+            clientRepository.deleteById(id);
+        }
     }
 
     @Override

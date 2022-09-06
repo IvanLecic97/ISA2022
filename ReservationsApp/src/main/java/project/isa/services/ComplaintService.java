@@ -83,13 +83,17 @@ public class ComplaintService implements IComplaintService {
     public ComplaintDTO manageComplaint(ComplaintDTO complaintDTO) {
         Complaint complaint = complaintRepository.getById(complaintDTO.getId());
 
+        if(!complaint.getAnswered())
+        {
             complaint.setAnswered(true);
             emailSenderService.sendSimpleEmail(complaint.getOwnerUsername(), complaintDTO.getOwnerAnswer(), "Complaint for "
-            + attractionRepository.findByIdEquals(complaint.getAttractionId()).getName());
+                    + attractionRepository.findByIdEquals(complaint.getAttractionId()).getName());
             emailSenderService.sendSimpleEmail(complaint.getClientUsername(), complaintDTO.getClientAnswer(), "Complaint for "
                     + attractionRepository.findByIdEquals(complaint.getAttractionId()).getName());
             complaintRepository.save(complaint);
 
-        return ComplaintMapper.INSTANCE.complaintToDto(complaint);
+            return ComplaintMapper.INSTANCE.complaintToDto(complaint);
+        } else return null;
+
     }
 }

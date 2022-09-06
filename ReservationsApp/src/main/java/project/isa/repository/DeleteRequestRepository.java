@@ -11,6 +11,8 @@ import java.util.List;
 public interface DeleteRequestRepository extends JpaRepository<DeleteRequest, Long> {
     List<DeleteRequest> findBySeenByAdminFalse();
 
+    DeleteRequest findByUserUsername(String userUsername);
+
 
 
 }
