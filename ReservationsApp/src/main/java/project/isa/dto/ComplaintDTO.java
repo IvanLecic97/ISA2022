@@ -27,4 +27,8 @@ public class ComplaintDTO {
 
     private Long reservationId;
 
+    private String ownerAnswer;
+
+    private String clientAnswer;
+
 }

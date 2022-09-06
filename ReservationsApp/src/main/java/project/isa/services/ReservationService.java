@@ -2,10 +2,12 @@ package project.isa.services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import project.isa.dto.DiscountedEntityDTO;
 import project.isa.dto.ReservationDTO;
 import project.isa.dto.ReservationHistoryDTO;
+import project.isa.model.LoyaltyCard;
 import project.isa.model.Reservations;
 import project.isa.model.Review;
 import project.isa.model.entities.*;
@@ -56,6 +58,9 @@ public class ReservationService implements IReservationService {
     private FishingInstructorRepository fishingInstructorRepository;
 
 
+    private LoyaltyCardService loyaltyCardService;
+
+
 
 
 
@@ -65,34 +70,65 @@ public class ReservationService implements IReservationService {
     }
 
     @Override
-    public void makeReservation(ReservationDTO reservationDTO) {
+    public boolean checkIfDatesAreValid(LocalDate date1, LocalDate date2, Long attractionId) {
+        boolean retVal = false;
+        List<Reservations> reservations = reservationsRepository.findByAttractionIdAndEndedFalse(attractionId);
+        for(Reservations r : reservations){
+            if(r.getStartDate().isEqual(date1) || r.getEndDate().isEqual(date2) || r.getStartDate().isEqual(date2) || r.getEndDate().isEqual(date1) ||
+                    ((date1.compareTo(r.getStartDate())) > 0 && (date1.compareTo(r.getEndDate()) < 0)) ||
+                    ((date2.compareTo(r.getStartDate()) > 0) && (date2.compareTo(r.getEndDate()) < 0 ))) {
+                retVal = true;
+            }
+        }
+        return retVal;
+    }
+
+    @Override
+    public String makeReservation(ReservationDTO reservationDTO) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date1 = LocalDate.parse(reservationDTO.getStartDate(), formatter);
+        LocalDate date2 = LocalDate.parse(reservationDTO.getEndDate(), formatter);
 
-       Attraction reservedAttraction = attractionRepository.getById(reservationDTO.getAttractionId());
+        if(!checkIfDatesAreValid((date1.minusDays(1)), (date2.minusDays(1)), reservationDTO.getAttractionId())){
+            Attraction reservedAttraction = attractionRepository.getById(reservationDTO.getAttractionId());
 
-       Reservations reservations = new Reservations();
-       RegUser owner = regUserRepository.findByUsername(attractionRepository.findByIdEquals(reservationDTO.getAttractionId()).getOwnerUsername());
-       Long clientId = regUserService.getUser(reservationDTO.getUsername()).getId();
-       reservations.setAttractionId(reservedAttraction.getId());
-       reservations.setOwnerId(owner.getId());
-       LocalDate date1 = LocalDate.parse(reservationDTO.getStartDate(), formatter);
-       reservations.setStartDate(date1.minusDays(1));
-       LocalDate date2 = LocalDate.parse(reservationDTO.getEndDate(), formatter);
-       reservations.setEndDate(date2.minusDays(1));
-       reservations.setClientId(clientId);
-       reservations.setAttractionType(reservedAttraction.getType());
-       reservations.setComplained(false);
 
-       Attraction a = attractionService.getById(reservationDTO.getAttractionId());
-       attractionRepository.save(a);
+            Reservations reservations = new Reservations();
+            RegUser owner = regUserRepository.findByUsername(attractionRepository.findByIdEquals(reservationDTO.getAttractionId()).getOwnerUsername());
+            RegUser user = (RegUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Long clientId = user.getId();
+            LoyaltyCard loyaltyCard = loyaltyCardService.findByUserUsername(user.getUsername());
+            reservations.setAttractionId(reservedAttraction.getId());
+            reservations.setOwnerId(owner.getId());
 
-       reservationsRepository.save(reservations);
+            reservations.setStartDate(date1.minusDays(1));
 
-       String msg = "You have successfully made  a reservation : " +
-               reservedAttraction.getType() + " " +
-               reservedAttraction.getName() + " " +
-               "from " + reservationDTO.getStartDate() + " to " + reservationDTO.getEndDate();
-        emailSenderService.sendSimpleEmail(reservationDTO.getUsername(), msg, "Reservation confirmaton" );
+            reservations.setEndDate(date2.minusDays(1));
+            reservations.setClientId(clientId);
+            reservations.setAttractionType(reservedAttraction.getType());
+            reservations.setComplained(false);
+            reservations.setEnded(false);
+
+
+            reservations.setPrice(loyaltyCardService.applyDiscount(loyaltyCard, reservedAttraction.getPrice()));
+
+
+
+            //Attraction a = attractionService.getById(reservationDTO.getAttractionId());
+           // attractionRepository.save(a);
+
+            reservationsRepository.save(reservations);
+            loyaltyCardService.addPoint(loyaltyCard);
+
+            String msg = "You have successfully made  a reservation : " +
+                    reservedAttraction.getType() + " " +
+                    reservedAttraction.getName() + " " +
+                    "from " + reservationDTO.getStartDate() + " to " + reservationDTO.getEndDate();
+            emailSenderService.sendSimpleEmail(reservationDTO.getUsername(), msg, "Reservation confirmaton" );
+
+            return "Reservation successful!";
+        }
+        else return "Wrong dates picked!!!";
 
     }
 
@@ -142,7 +178,7 @@ public class ReservationService implements IReservationService {
             r.setCountry(a.getCountry());
             r.setStartDate(value.getStartDate().toString());
             r.setEndDate(value.getEndDate().toString());
-            r.setPrice(a.getPrice());
+            r.setPrice(value.getPrice());
             r.setAttractionId(a.getId());
             r.setOwnerUsername(a.getOwnerUsername());
             r.setReviewed(value.isReviewed());
@@ -166,7 +202,7 @@ public class ReservationService implements IReservationService {
                 r.setCountry(a.getCountry());
                 r.setStartDate(value.getStartDate().toString());
                 r.setEndDate(value.getEndDate().toString());
-                r.setPrice(a.getPrice());
+                r.setPrice(value.getPrice());
                 r.setAttractionId(a.getId());
                 r.setOwnerUsername(a.getOwnerUsername());
                 r.setReviewed(value.isReviewed());
@@ -191,10 +227,11 @@ public class ReservationService implements IReservationService {
             r.setCountry(a.getCountry());
             r.setStartDate(value.getStartDate().toString());
             r.setEndDate(value.getEndDate().toString());
-            r.setPrice(a.getPrice());
+            r.setPrice(value.getPrice());
             r.setAttractionId(a.getId());
             r.setOwnerUsername(a.getOwnerUsername());
             r.setReviewed(value.isReviewed());
+
             reservationHistoryDTOList.add(r);
         });
 

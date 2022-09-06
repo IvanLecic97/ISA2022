@@ -27,9 +27,9 @@ public class ReservationController {
     @PostMapping(value = "/makeReservation")
     public ResponseEntity<?> makeReservation(@RequestBody ReservationDTO reservationDTO){
 
-        reservationService.makeReservation(reservationDTO);;
 
-        return new ResponseEntity<String>("Reservation made!", HttpStatus.OK);
+
+        return new ResponseEntity<String>(reservationService.makeReservation(reservationDTO), HttpStatus.OK);
 
     }
 

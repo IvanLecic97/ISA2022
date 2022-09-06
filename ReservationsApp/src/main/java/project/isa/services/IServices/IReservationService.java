@@ -14,8 +14,8 @@ import java.util.List;
 
 public interface IReservationService {
 
-    public void makeReservation(ReservationDTO reservationDTO);
-    public void saveReservation(Reservations reservations);
+     String makeReservation(ReservationDTO reservationDTO);
+     void saveReservation(Reservations reservations);
 
     String reserveDiscountedEntity(DiscountedEntityDTO discountedEntityDTO, String username);
 
@@ -29,5 +29,8 @@ public interface IReservationService {
     List<ReservationHistoryDTO> getClientsReservedInstructors(String clientUsername);
 
     void deleteAllUsersReservations(Long clientId);
+
+    boolean checkIfDatesAreValid(LocalDate date1, LocalDate date2, Long attractionId);
+
 
 }

@@ -138,7 +138,7 @@ function SearchEntities() {
 
     let startDateFilter = [];
     startDateFilter = copiedArray.filter(
-      (element) => element.startDate.getTime() > startDate.getTime()
+      (element) => element.startDate.getTime() <= startDate.getTime()
     );
     if (startDateChanged !== false && startDateFilter.length !== 0) {
       firstIteration = [...startDateFilter];
@@ -149,7 +149,7 @@ function SearchEntities() {
     let endDateFilter = [];
     let secondIteration = [];
     endDateFilter = firstIteration.filter(
-      (element) => element.endDate.getTime() < endDate.getTime()
+      (element) => element.endDate.getTime() <= endDate.getTime()
     );
     if (endDateChanged !== false && endDateFilter.length !== 0) {
       secondIteration = [...endDateFilter];
@@ -172,9 +172,7 @@ function SearchEntities() {
     let priceFilter = [];
     let fourthIteration = [];
     if (price !== 0) {
-      priceFilter = thirdIteration.filter(
-        (element) => element.attraction.price < price
-      );
+      priceFilter = thirdIteration.filter((element) => element.price <= price);
       fourthIteration = [...priceFilter];
     } else {
       fourthIteration = [...thirdIteration];

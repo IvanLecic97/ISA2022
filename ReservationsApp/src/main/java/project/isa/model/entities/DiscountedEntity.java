@@ -1,10 +1,20 @@
 package project.isa.model.entities;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "Discounted_Entity")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class DiscountedEntity {
     @Id
     @Column(name = "Id")
@@ -21,40 +31,15 @@ public class DiscountedEntity {
     @Column(name = "New_Price")
     private double newPrice;
 
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
 
-    public DiscountedEntity() {
-    }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Long getAttractionId() {
-        return attractionId;
-    }
 
-    public void setAttractionId(Long attractionId) {
-        this.attractionId = attractionId;
-    }
-
-    public double getOldPrice() {
-        return oldPrice;
-    }
-
-    public void setOldPrice(double oldPrice) {
-        this.oldPrice = oldPrice;
-    }
-
-    public double getNewPrice() {
-        return newPrice;
-    }
-
-    public void setNewPrice(double newPrice) {
-        this.newPrice = newPrice;
-    }
 }

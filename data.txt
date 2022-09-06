@@ -38,6 +38,10 @@ insert into isa_db.ships_user(owner_id, ship_id) values (3, 4);
 insert into isa_db.instructor_users(owner_id, instructor_id) values (4, 3);
 
 
+insert into isa_db.loyalty_car(id, category, points, user) values (1, "Regular", 0, "ika619@gmail.com");
+
+
+
 
 
 

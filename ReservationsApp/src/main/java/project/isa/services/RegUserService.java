@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import project.isa.Categories;
 import project.isa.Roles;
 import project.isa.dto.*;
 import project.isa.mappers.BungalowOwnerMapper;
@@ -19,6 +20,7 @@ import project.isa.mappers.DeleteRequestMapper;
 import project.isa.mappers.FishingInstructorOwnerMapper;
 import project.isa.mappers.ShipOwnerMapper;
 import project.isa.model.DeleteRequest;
+import project.isa.model.LoyaltyCard;
 import project.isa.model.entities.Bungalow;
 import project.isa.model.users.*;
 import project.isa.repository.*;
@@ -84,6 +86,9 @@ public class RegUserService implements IRegUserService, UserDetailsService {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private LoyaltyCardRepository loyaltyCardRepository;
+
 
 
 
@@ -113,8 +118,7 @@ public class RegUserService implements IRegUserService, UserDetailsService {
 
     @Override
     public List<RegUser> getAllRegUsers() {
-        List<RegUser> list = regUserRepository.findAll();
-        return list;
+        return regUserRepository.findAll();
     }
 
     @Override
@@ -125,9 +129,6 @@ public class RegUserService implements IRegUserService, UserDetailsService {
     @Override
    public RegUser getUser(String username)
     {
-        ;
-
-
         return regUserRepository.findByUsername(username);
     }
 
@@ -147,6 +148,12 @@ public class RegUserService implements IRegUserService, UserDetailsService {
             u.setSurname(user.getSurname());
             u.setUsername(user.getUsername());
             u.setActivated(false);
+
+            LoyaltyCard loyaltyCard = new LoyaltyCard();
+            loyaltyCard.setCategory(Categories.REGULAR);
+            loyaltyCard.setUserUsername(user.getUsername());
+            loyaltyCard.setPoints(0L);
+            loyaltyCardRepository.save(loyaltyCard);
 
             /*Authorities authorities = authoritiesRepository.findByName(Roles.ROLE_CLIENT);
             List<Authorities> authorities1 = new ArrayList<Authorities>();

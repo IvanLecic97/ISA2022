@@ -13,7 +13,7 @@ import java.util.List;
 public class Attraction {
     @Id
     @Column(name = "Id")
-    @SequenceGenerator(name="gen12",sequenceName = "gen112",initialValue = 4,allocationSize = 1)
+    @SequenceGenerator(name="gen12",sequenceName = "gen112",initialValue = 5,allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "gen12")
     private Long id;
 

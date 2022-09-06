@@ -38,12 +38,17 @@ public class Reservations {
     @Column(name = "is_complained")
     private Boolean isComplained;
 
+    @Column(name = "ended")
+    private Boolean ended;
+
+    @Column(name = "price")
+    private Double price;
 
     public Reservations() {
     }
 
     public Reservations(Long id, Long attractionId, Long ownerId, Long clientId, LocalDate startDate,
-                        LocalDate endDate, String attractionType, boolean isReviewed, Boolean isComplained) {
+                        LocalDate endDate, String attractionType, boolean isReviewed, Boolean isComplained, Boolean ended, Double price) {
         this.id = id;
         this.attractionId = attractionId;
         this.ownerId = ownerId;
@@ -53,6 +58,8 @@ public class Reservations {
         this.attractionType = attractionType;
         this.isReviewed = isReviewed;
         this.isComplained = isComplained;
+        this.ended = ended;
+        this.price = price;
     }
 
     public Long getId() {
@@ -125,5 +132,21 @@ public class Reservations {
 
     public void setComplained(Boolean complained) {
         isComplained = complained;
+    }
+
+    public Boolean getEnded() {
+        return ended;
+    }
+
+    public void setEnded(Boolean ended) {
+        this.ended = ended;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

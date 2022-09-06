@@ -31,6 +31,8 @@ public class ReviewService implements IReviewService {
 
     private ReservationsRepository reservationsRepository;
 
+    private EmailSenderService emailSenderService;
+
 
 
     @Override
@@ -74,9 +76,11 @@ public class ReviewService implements IReviewService {
     @Override
     public ReviewDTO manageReview(ReviewDTO reviewDTO) {
         Review review = reviewRepository.getById(reviewDTO.getId());
+        String answer = "";
         if(reviewDTO.getApproved()){
             review.setApproved(true);
             review.setSeenByAdmin(true);
+            emailSenderService.sendSimpleEmail(review.getOwnerUsername(), "New review has been added to your attraction", "Attraction review");
         } else {
             review.setSeenByAdmin(true);
         }

@@ -11,5 +11,9 @@ import java.util.List;
 public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
     List<Complaint> findByClientUsername(String clientUsername);
 
+    List<Complaint> findByAnsweredFalse();
+
+
+
 
 }

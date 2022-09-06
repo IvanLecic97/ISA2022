@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HomepageClient from "./client/homepageClient";
 import { FormGroup } from "react-bootstrap";
 import { Form } from "react-bootstrap";
@@ -26,6 +26,30 @@ const Login = () => {
     console.log(password);
   };
 
+  function regularLogin() {
+    const data = {
+      username: username,
+      password: password,
+    };
+    const url = "http://localhost:8081/auth/login";
+    axios.post(url, data).then((response) => {
+      console.log("User info" + response.data.country);
+      localStorage.setItem("token", response.data.token.accessToken);
+      localStorage.setItem("username", response.data.username);
+      localStorage.setItem("role", response.data.role);
+      console.log(response.data.username);
+      console.log(localStorage.getItem("role"));
+      console.log(localStorage.getItem("token"));
+
+      if (localStorage.getItem("role") === "ROLE_CLIENT") {
+        navigate("/homepageClient");
+      }
+      if (localStorage.getItem("role") === "ROLE_ADMIN") {
+        navigate("/homepageAdmin");
+      }
+    });
+  }
+
   let handleSubmit = (event) => {
     event.preventDefault();
     const data = {
@@ -50,6 +74,12 @@ const Login = () => {
       }
     });
   };
+
+  useEffect(() => {
+    
+  
+  }, [])
+  
 
   return (
     <div>

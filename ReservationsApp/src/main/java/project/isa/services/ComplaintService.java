@@ -9,6 +9,7 @@ import project.isa.mappers.ComplaintMapper;
 import project.isa.model.Complaint;
 import project.isa.model.Reservations;
 import project.isa.model.users.RegUser;
+import project.isa.repository.AttractionRepository;
 import project.isa.repository.ComplaintRepository;
 import project.isa.repository.ReservationsRepository;
 import project.isa.services.IServices.IComplaintService;
@@ -26,6 +27,9 @@ public class ComplaintService implements IComplaintService {
 
     private ReservationsRepository reservationsRepository;
 
+    private EmailSenderService emailSenderService;
+
+    private AttractionRepository attractionRepository;
 
 
 
@@ -68,5 +72,24 @@ public class ComplaintService implements IComplaintService {
         }
 
 
+    }
+
+    @Override
+    public List<ComplaintDTO> getAllNotAnswered() {
+        return ComplaintMapper.INSTANCE.complaintsToDtos(complaintRepository.findByAnsweredFalse());
+    }
+
+    @Override
+    public ComplaintDTO manageComplaint(ComplaintDTO complaintDTO) {
+        Complaint complaint = complaintRepository.getById(complaintDTO.getId());
+
+            complaint.setAnswered(true);
+            emailSenderService.sendSimpleEmail(complaint.getOwnerUsername(), complaintDTO.getOwnerAnswer(), "Complaint for "
+            + attractionRepository.findByIdEquals(complaint.getAttractionId()).getName());
+            emailSenderService.sendSimpleEmail(complaint.getClientUsername(), complaintDTO.getClientAnswer(), "Complaint for "
+                    + attractionRepository.findByIdEquals(complaint.getAttractionId()).getName());
+            complaintRepository.save(complaint);
+
+        return ComplaintMapper.INSTANCE.complaintToDto(complaint);
     }
 }

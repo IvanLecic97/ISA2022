@@ -46,16 +46,22 @@ const UpdateClient = () => {
     //setCurrentUser(localStorage.getItem("username"));
     console.log(currentUser);
     const url = "http://localhost:8081/api/user/getUser/" + currentUser;
-    axios.get(url).then((res) => {
-      console.log(res.data);
-      setOldPassword(res.data.password);
-      setOldName(res.data.name);
-      setOldSurname(res.data.surname);
-      setOldCity(res.data.city);
-      setOldCountry(res.data.country);
-      setOldAddress(res.data.address);
-      setOldPhone(res.data.phone);
-    });
+    axios
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setOldPassword(res.data.password);
+        setOldName(res.data.name);
+        setOldSurname(res.data.surname);
+        setOldCity(res.data.city);
+        setOldCountry(res.data.country);
+        setOldAddress(res.data.address);
+        setOldPhone(res.data.phone);
+      });
     console.log(oldPassword);
     console.log(oldSurname);
   };

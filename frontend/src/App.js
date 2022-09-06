@@ -38,6 +38,11 @@ import Complaint from "./main/client/complaint";
 import DeleteAccount from "./main/client/deleteAccount";
 import DeleteRequests from "./main/admin/deleteRequests";
 import AddNewAdmin from "./main/admin/addNewAdmin";
+import DefineAction from "./main/owners/defineAction";
+import SaveAction from "./main/owners/saveAction";
+import BungalowPage from "./main/owners/bungalowPage";
+import ReviewsList from "./main/admin/reviewsList";
+import ComplaintsList from "./main/admin/complaintsList";
 
 const App = () => {
   const [value, setValue] = useState(true);
@@ -126,6 +131,11 @@ const App = () => {
         <Route path="/deleteAccount" element={<DeleteAccount />} />
         <Route path="/deleteRequests" element={<DeleteRequests />} />
         <Route path="/addNewAdmin" element={<AddNewAdmin />} />
+        <Route path="/defineAction" element={<DefineAction />} />
+        <Route path="/saveAction" element={<SaveAction />} />
+        <Route path="/bungalowPage" element={<BungalowPage />} />
+        <Route path="/reviewsList" element={<ReviewsList />} />
+        <Route path="/complaintsList" element={<ComplaintsList />} />
       </Routes>
     </React.Fragment>
   );
